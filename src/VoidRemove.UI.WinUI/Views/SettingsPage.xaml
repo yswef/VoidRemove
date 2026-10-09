@@ -1,0 +1,176 @@
+<Page x:Class="VoidRemove.UI.WinUI.Views.SettingsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d"
+      FlowDirection="LeftToRight">
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+
+    <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+      <StackPanel Margin="28,22,28,10" MaxWidth="920" HorizontalAlignment="Left">
+
+        <TextBlock Text="{Binding Title}" Style="{StaticResource Text.Title}" />
+        <TextBlock Text="{Binding Subtitle}" Style="{StaticResource Text.Hint}" Margin="0,0,0,18" />
+
+        <!-- Appearance -->
+        <Border Style="{StaticResource Card}">
+          <StackPanel>
+            <TextBlock Text="{Binding AppearanceGroupTitle}" Style="{StaticResource Text.SectionHeader}" />
+
+            <StackPanel Margin="0,0,0,16">
+              <TextBlock Text="{Binding LanguageLabel}" Style="{StaticResource Text.Label}" />
+              <ComboBox HorizontalAlignment="Stretch"
+                        ItemsSource="{Binding Languages}"
+                        DisplayMemberPath="NativeName"
+                        SelectedValuePath="Code"
+                        SelectedValue="{Binding Language, Mode=TwoWay}" />
+              <TextBlock Text="{Binding LanguageHint}" Style="{StaticResource Text.Hint}" />
+            </StackPanel>
+
+            <StackPanel Margin="0,0,0,16">
+              <TextBlock Text="{Binding ThemeLabel}" Style="{StaticResource Text.Label}" />
+              <ComboBox HorizontalAlignment="Stretch"
+                        ItemsSource="{Binding ThemeOptions}"
+                        DisplayMemberPath="Display"
+                        SelectedValuePath="Value"
+                        SelectedValue="{Binding Theme, Mode=TwoWay}" />
+            </StackPanel>
+
+            <StackPanel Margin="0,0,0,16">
+              <TextBlock Text="{Binding AccentLabel}" Style="{StaticResource Text.Label}" />
+              <TextBox MaxWidth="220"
+                       HorizontalAlignment="Left"
+                       Text="{Binding AccentColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+
+            <StackPanel>
+              <TextBlock Text="{Binding LayoutLabel}" Style="{StaticResource Text.Label}" />
+              <ComboBox HorizontalAlignment="Stretch"
+                        ItemsSource="{Binding LayoutOptions}"
+                        DisplayMemberPath="Display"
+                        SelectedValuePath="Value"
+                        SelectedValue="{Binding Layout, Mode=TwoWay}" />
+            </StackPanel>
+          </StackPanel>
+        </Border>
+
+        <!-- Uninstall -->
+        <Border Style="{StaticResource Card}">
+          <StackPanel>
+            <TextBlock Text="{Binding UninstallGroupTitle}" Style="{StaticResource Text.SectionHeader}" />
+
+            <StackPanel Margin="0,0,0,16">
+              <TextBlock Text="{Binding UninstallBehaviorLabel}" Style="{StaticResource Text.Label}" />
+              <ComboBox HorizontalAlignment="Stretch"
+                        ItemsSource="{Binding BehaviorOptions}"
+                        DisplayMemberPath="Display"
+                        SelectedValuePath="Value"
+                        SelectedValue="{Binding DefaultUninstallBehavior, Mode=TwoWay}" />
+            </StackPanel>
+
+            <StackPanel Margin="0,0,0,12">
+              <TextBlock Text="{Binding SafetyCeilingLabel}" Style="{StaticResource Text.Label}" />
+              <ComboBox HorizontalAlignment="Stretch"
+                        ItemsSource="{Binding SafetyOptions}"
+                        DisplayMemberPath="Display"
+                        SelectedValuePath="Value"
+                        SelectedValue="{Binding ResidualSafetyCeiling, Mode=TwoWay}" />
+            </StackPanel>
+
+            <CheckBox Content="{Binding CreateRestorePointLabel}" IsChecked="{Binding CreateRestorePointByDefault, Mode=TwoWay}" />
+            <CheckBox Content="{Binding RemoveResidualsLabel}" IsChecked="{Binding RemoveResidualsByDefault, Mode=TwoWay}" />
+            <CheckBox Content="{Binding ConfirmBeforeUninstallLabel}" IsChecked="{Binding ConfirmBeforeUninstall, Mode=TwoWay}" />
+            <CheckBox Content="{Binding DryRunDefaultLabel}" IsChecked="{Binding DryRunByDefault, Mode=TwoWay}" />
+          </StackPanel>
+        </Border>
+
+        <!-- Monitoring -->
+        <Border Style="{StaticResource Card}">
+          <StackPanel>
+            <TextBlock Text="{Binding MonitoringGroupTitle}" Style="{StaticResource Text.SectionHeader}" />
+            <CheckBox Content="{Binding AutoMonitorLabel}" IsChecked="{Binding AutoMonitorEnabled, Mode=TwoWay}" />
+            <TextBlock Text="{Binding AutoMonitorHint}" Style="{StaticResource Text.Hint}" Margin="0,0,0,12" />
+            <CheckBox Content="{Binding ContextMenuLabel}" IsChecked="{Binding ExplorerContextMenuEnabled, Mode=TwoWay}" />
+            <TextBlock Text="{Binding ContextMenuHint}" Style="{StaticResource Text.Hint}" />
+            <TextBlock Text="{Binding NeedsRestartText}" Style="{StaticResource Text.Hint}" />
+          </StackPanel>
+        </Border>
+
+        <!-- Online -->
+        <Border Style="{StaticResource Card}">
+          <StackPanel>
+            <TextBlock Text="{Binding OnlineGroupTitle}" Style="{StaticResource Text.SectionHeader}" />
+            <CheckBox Content="{Binding CheckForUpdatesLabel}" IsChecked="{Binding CheckForUpdatesEnabled, Mode=TwoWay}" />
+            <TextBlock Text="{Binding CheckForUpdatesHint}" Style="{StaticResource Text.Hint}" Margin="0,0,0,12" />
+            <CheckBox Content="{Binding VirusTotalLabel}" IsChecked="{Binding VirusTotalEnabled, Mode=TwoWay}" />
+            <TextBlock Text="{Binding VirusTotalHint}" Style="{StaticResource Text.Hint}" Margin="0,0,0,12" />
+
+            <TextBlock Text="{Binding VirusTotalKeyLabel}" Style="{StaticResource Text.Label}" />
+            <TextBox MaxWidth="420"
+                     HorizontalAlignment="Left"
+                     IsEnabled="{Binding VirusTotalEnabled}"
+                     Text="{Binding VirusTotalApiKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBlock Text="{Binding VirusTotalKeyHint}" Style="{StaticResource Text.Hint}" />
+          </StackPanel>
+        </Border>
+
+        <!-- Storage -->
+        <Border Style="{StaticResource Card}" Margin="0">
+          <StackPanel>
+            <TextBlock Text="{Binding StorageGroupTitle}" Style="{StaticResource Text.SectionHeader}" />
+
+            <StackPanel Margin="0,0,0,16">
+              <TextBlock Text="{Binding QuarantinePathLabel}" Style="{StaticResource Text.Label}" />
+              <TextBox MaxWidth="520"
+                       HorizontalAlignment="Left"
+                       Text="{Binding QuarantinePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+              <StackPanel Margin="0,0,26,0">
+                <TextBlock Text="{Binding QuarantineRetentionLabel}" Style="{StaticResource Text.Label}" />
+                <TextBox Width="90" Text="{Binding QuarantineRetentionDays, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              </StackPanel>
+              <StackPanel>
+                <TextBlock Text="{Binding MaxConcurrentScansLabel}" Style="{StaticResource Text.Label}" />
+                <TextBox Width="90" Text="{Binding MaxConcurrentScans, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              </StackPanel>
+            </StackPanel>
+          </StackPanel>
+        </Border>
+
+      </StackPanel>
+    </ScrollViewer>
+
+    <!-- Footer -->
+    <Border Grid.Row="1"
+            Background="{StaticResource Brush.Sidebar}"
+            BorderBrush="{StaticResource Brush.Divider}"
+            BorderThickness="0,1,0,0"
+            Padding="28,14">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Text="{Binding UnsavedChangesText}"
+                   Style="{StaticResource Text.Hint}"
+                   VerticalAlignment="Center" />
+
+        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+          <Button Content="{Binding RestoreDefaultsText}" Command="{Binding RestoreDefaultsCommand}" Margin="0,0,10,0" />
+          <Button Content="{Binding SaveText}" Command="{Binding SaveCommand}" MinWidth="140" Style="{StaticResource AccentButtonStyle}" />
+        </StackPanel>
+      </Grid>
+    </Border>
+
+  </Grid>
+
+</Page>

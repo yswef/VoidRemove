@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <RootNamespace>VoidRemove.Core.Tests</RootNamespace>
+    <AssemblyName>VoidRemove.Core.Tests</AssemblyName>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <Description>Critical path tests for VoidRemove: identity, paths, settings, safety rules, localization and theming.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="coverlet.collector" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\VoidRemove.Core\VoidRemove.Core.csproj" />
+    <ProjectReference Include="..\..\src\VoidRemove.Shared\VoidRemove.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

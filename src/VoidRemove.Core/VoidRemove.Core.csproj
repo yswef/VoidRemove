@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <RootNamespace>VoidRemove.Core</RootNamespace>
+    <AssemblyName>VoidRemove.Core</AssemblyName>
+    <Description>All system logic for VoidRemove: program discovery, the removal engine, residual scanning, install monitoring and health checks. Contains no UI code.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VoidRemove.Shared\VoidRemove.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Registry, Services and WMI types come from the net8.0-windows shared framework. -->
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <PackageReference Include="CommunityToolkit.Mvvm" />
+    <PackageReference Include="Serilog" />
+    <PackageReference Include="Serilog.Extensions.Logging" />
+    <PackageReference Include="Serilog.Sinks.File" />
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" />
+    <!-- WMI for the Install Monitor's automatic setup detection. -->
+    <PackageReference Include="System.Management" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="VoidRemove.Core.Tests" />
+  </ItemGroup>
+
+</Project>

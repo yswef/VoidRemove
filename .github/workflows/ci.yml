@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build-test:
+    name: Build and test (Windows)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore
+        run: dotnet restore VoidRemove.sln
+
+      - name: Build
+        run: dotnet build VoidRemove.sln -c Release --no-restore
+
+      - name: Test
+        run: dotnet test tests/VoidRemove.Core.Tests -c Release --no-build --logger "trx;LogFileName=tests.trx"
+
+      - name: Surface failing tests as annotations
+        if: always()
+        shell: pwsh
+        run: |
+          $lines = @()
+          Get-ChildItem -Recurse -Filter *.trx | ForEach-Object {
+            [xml]$x = Get-Content $_.FullName
+            $x.TestRun.Results.UnitTestResult |
+              Where-Object { $_.outcome -eq 'Failed' } |
+              ForEach-Object {
+                $msg = ($_.Output.ErrorInfo.Message -replace '\s+', ' ').Trim()
+                $lines += "$($_.testName) :: $msg"
+              }
+          }
+          $total = ($lines | Measure-Object).Count
+          if ($total -gt 0) {
+            $body = ($lines -join "`n")
+            if ($body.Length -gt 7000) { $body = $body.Substring(0, 7000) }
+            Write-Output "::error::FAILURES=$total`n$body"
+          }
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: '**/*.trx'
+
+  offline-checks:
+    name: Offline repository checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Repository consistency
+        run: python tools/verify_repo.py
+
+      - name: Identity mirrors up to date
+        run: python tools/sync_appinfo.py --check

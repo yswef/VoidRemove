@@ -1,0 +1,43 @@
+<Project>
+
+  <!--
+    Single place that controls how every project in this repository is compiled.
+    Version numbers of NuGet packages live in Directory.Packages.props (central
+    package management); product identity lives in src/VoidRemove.Shared/AppInfo.cs.
+  -->
+  <PropertyGroup>
+    <LangVersion>12.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+    <DebugType>portable</DebugType>
+    <Deterministic>true</Deterministic>
+
+    <!-- Release identity. Bump here; tools/sync_appinfo.py copies it out for the
+         installer and the docs so a release touches exactly two places. -->
+    <VersionPrefix>0.1.0</VersionPrefix>
+    <VersionSuffix></VersionSuffix>
+
+    <Authors>VoidRemove contributors</Authors>
+    <Company>VoidRemove Project</Company>
+    <Product>VoidRemove</Product>
+    <Copyright>Copyright © 2026 VoidRemove contributors</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/yswef/VoidRemove</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/yswef/VoidRemove</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <NeutralLanguage>en</NeutralLanguage>
+
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
+  </PropertyGroup>
+
+  <!-- Reproducible builds in CI. -->
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+  </PropertyGroup>
+
+</Project>

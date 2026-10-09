@@ -1,0 +1,36 @@
+site_name: VoidRemove
+site_description: Remove programs completely - down to the last trace. Free, open source, offline-first.
+site_url: https://yswef.github.io/VoidRemove/
+repo_url: https://github.com/yswef/VoidRemove
+repo_name: yswef/VoidRemove
+
+theme:
+  name: material
+  logo: assets/logo-mono.svg
+  favicon: assets/logo-mono.svg
+  palette:
+    scheme: slate
+    primary: black
+    accent: teal
+  features:
+    - navigation.sections
+    - navigation.top
+    - search.suggest
+    - content.code.copy
+
+markdown_extensions:
+  - admonition
+  - tables
+  - pymdownx.highlight
+  - pymdownx.superfences
+
+nav:
+  - Home: index.md
+  - User Guide: user-guide.md
+  - FAQ: faq.md
+  - Developers: developers.md
+  - العربية:
+      - الرئيسية: ar/index.md
+      - دليل المستخدم: ar/user-guide.md
+      - الأسئلة الشائعة: ar/faq.md
+      - للمطورين: ar/developers.md

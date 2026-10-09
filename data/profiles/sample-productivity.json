@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "id": "sample-productivity",
+  "displayName": "Sample productivity suite",
+  "matchNames": ["sample productivity", "acme notes"],
+  "locations": [
+    { "kind": "Folder", "path": "%AppData%\\AcmeNotes", "optional": true },
+    { "kind": "Folder", "path": "%LocalAppData%\\AcmeNotes", "optional": true },
+    { "kind": "Registry", "path": "HKEY_CURRENT_USER\\Software\\AcmeNotes", "optional": true }
+  ]
+}

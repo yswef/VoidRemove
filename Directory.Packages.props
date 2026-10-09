@@ -1,0 +1,55 @@
+<Project>
+
+  <!--
+    Central package management: every NuGet version used anywhere in the solution is
+    pinned here exactly once. Project files reference packages without a Version.
+    All versions below were checked against the upstream release tags listed in the
+    comment on each line.
+  -->
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>false</CentralPackageTransitivePinningEnabled>
+  </PropertyGroup>
+
+  <ItemGroup Label="MVVM / DI / logging">
+    <!-- github.com/CommunityToolkit/dotnet tag v8.4.2 -->
+    <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <!-- .NET 8 release train -->
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Options" Version="8.0.0" />
+    <!-- github.com/serilog/serilog tag v4.2.0 -->
+    <PackageVersion Include="Serilog" Version="4.2.0" />
+    <!-- github.com/serilog/serilog-extensions-logging tag v8.0.0 -->
+    <PackageVersion Include="Serilog.Extensions.Logging" Version="8.0.0" />
+    <!-- github.com/serilog/serilog-sinks-file tag v6.0.0 -->
+    <PackageVersion Include="Serilog.Sinks.File" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup Label="Windows platform">
+    <!-- DPAPI. Verified NOT part of the net8.0 shared framework, so it must be referenced. -->
+    <PackageVersion Include="System.Security.Cryptography.ProtectedData" Version="8.0.0" />
+    <!-- WMI for the Install Monitor (phase 3). Pinned now so the version is reviewed once. -->
+    <PackageVersion Include="System.Management" Version="8.0.0" />
+    <!-- SQLite program cache (phase 2). Pinned now so the version is reviewed once. -->
+    <PackageVersion Include="Microsoft.Data.Sqlite" Version="8.0.0" />
+    <!-- Options pattern plumbing, reserved for later phases. -->
+    <PackageVersion Include="Microsoft.Extensions.Options" Version="8.0.0" />
+    <!-- WinUI 3 (Windows App SDK 1.7.9 release notes) -->
+    <PackageVersion Include="Microsoft.WindowsAppSDK" Version="1.7.260224002" />
+    <PackageVersion Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.4188" />
+  </ItemGroup>
+
+  <ItemGroup Label="Tests">
+    <!-- github.com/xunit/xunit tag v2-2.9.3 -->
+    <PackageVersion Include="xunit" Version="2.9.3" />
+    <!-- github.com/xunit/visualstudio.xunit tag 2.8.2 -->
+    <PackageVersion Include="xunit.runner.visualstudio" Version="2.8.2" />
+    <!-- github.com/microsoft/vstest tag v17.14.1 -->
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <!-- github.com/coverlet-coverage/coverlet tag v6.0.4 -->
+    <PackageVersion Include="coverlet.collector" Version="6.0.4" />
+  </ItemGroup>
+
+</Project>

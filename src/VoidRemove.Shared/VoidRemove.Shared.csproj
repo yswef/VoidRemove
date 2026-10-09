@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>VoidRemove.Shared</RootNamespace>
+    <AssemblyName>VoidRemove.Shared</AssemblyName>
+    <Description>Product identity, localization, theming, shared models and shared view models for VoidRemove. Contains no UI framework code.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Localization catalogs ship inside the assembly so the app is fully offline.
+         LogicalName is pinned (and WithCulture disabled) so MSBuild does not treat the
+         "en"/"ar" token as a satellite culture and rename the manifest resource. -->
+    <EmbeddedResource Include="Resources\strings.en.json">
+      <LogicalName>VoidRemove.Shared.Resources.strings.en.json</LogicalName>
+      <WithCulture>false</WithCulture>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\strings.ar.json">
+      <LogicalName>VoidRemove.Shared.Resources.strings.ar.json</LogicalName>
+      <WithCulture>false</WithCulture>
+    </EmbeddedResource>
+    <None Remove="Resources\strings.en.json" />
+    <None Remove="Resources\strings.ar.json" />
+  </ItemGroup>
+
+</Project>

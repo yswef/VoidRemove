@@ -1,0 +1,6 @@
+{
+  "schema": 1,
+  "description": "Editable list of publishers and product tokens VoidRemove flags as bundleware. Original sample data; extend freely.",
+  "publishers": ["example software bundle", "contoso adware"],
+  "products": ["example toolbar", "sample coupon helper", "pc optimizer trial"]
+}

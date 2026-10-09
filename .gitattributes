@@ -1,0 +1,35 @@
+# Default: normalise to LF in the repository, check out with LF.
+* text=auto eol=lf
+
+# Source and config
+*.cs        text eol=lf diff=csharp
+*.csproj    text eol=lf
+*.props     text eol=lf
+*.targets   text eol=lf
+*.xaml      text eol=lf
+*.manifest  text eol=lf
+*.json      text eol=lf
+*.md        text eol=lf
+*.yml       text eol=lf
+*.yaml      text eol=lf
+*.py        text eol=lf
+*.svg       text eol=lf
+*.editorconfig text eol=lf
+*.gitignore text eol=lf
+
+# Windows tooling expects CRLF
+*.sln       text eol=crlf
+*.iss       text eol=crlf
+*.bat       text eol=crlf
+*.cmd       text eol=crlf
+*.ps1       text eol=crlf
+*.rc        text eol=crlf
+
+# Binary
+*.ico       binary
+*.png       binary
+*.jpg       binary
+*.gif       binary
+*.woff      binary
+*.woff2     binary
+*.ttf       binary

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="VoidRemove">
+  <title>VoidRemove</title>
+  <defs>
+    <linearGradient id="voidTile" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0C1017"/>
+      <stop offset="1" stop-color="#05070A"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#voidTile)"/>
+  <path d="M 415.78 204.09 A 168 168 0 0 1 359.43 388.39" fill="none" stroke="#2EE6A8" stroke-width="34" stroke-linecap="round"/>
+  <path d="M 307.91 415.78 A 168 168 0 0 1 123.61 359.43" fill="none" stroke="#33D9C6" stroke-width="34" stroke-linecap="round"/>
+  <path d="M 96.22 307.91 A 168 168 0 0 1 152.57 123.61" fill="none" stroke="#5A94F5" stroke-width="34" stroke-linecap="round"/>
+  <path d="M 204.09 96.22 A 168 168 0 0 1 388.39 152.57" fill="none" stroke="#7B61FF" stroke-width="34" stroke-linecap="round"/>
+  <circle cx="34.23" cy="175.28" r="8.0" fill="#2EE6A8" opacity="0.90"/>
+  <circle cx="84.49" cy="131.39" r="6.0" fill="#2EE6A8" opacity="0.65"/>
+  <circle cx="131.30" cy="107.39" r="4.0" fill="#2EE6A8" opacity="0.40"/>
+  <circle cx="256" cy="256" r="66" fill="#05070A"/>
+  <circle cx="256" cy="256" r="54" fill="none" stroke="#7B61FF" stroke-width="6" opacity="0.85"/>
+  <circle cx="256" cy="256" r="16" fill="#2EE6A8"/>
+</svg>

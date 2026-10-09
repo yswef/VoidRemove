@@ -1,0 +1,31 @@
+<UserControl x:Class="VoidRemove.UI.Wpf.Views.ExtensionsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Grid Margin="28">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+
+    <StackPanel Grid.Row="0" Orientation="Horizontal">
+      <TextBlock Style="{StaticResource Text.Title}" Text="{Binding Title}" />
+      <Button Style="{StaticResource Button.Ghost}" Content="⟳" Command="{Binding RefreshCommand}" Margin="18,0,0,0" />
+      <Button Style="{StaticResource Button.Ghost}" Content="Remove suspicious" Command="{Binding RemoveSuspiciousCommand}" Margin="8,0,0,0" />
+      <Button Style="{StaticResource Button.Primary}" Content="Remove" Command="{Binding RemoveSelectedCommand}" Margin="8,0,0,0" />
+    </StackPanel>
+
+    <ListView Grid.Row="2" ItemsSource="{Binding Extensions}" SelectedItem="{Binding SelectedItem}"
+              Background="Transparent" BorderThickness="0" Margin="0,12,0,0">
+      <ListView.ItemTemplate>
+        <DataTemplate>
+          <StackPanel Orientation="Horizontal">
+            <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+            <TextBlock Text="{Binding BrowserKind}" Margin="12,0,0,0" Opacity="0.6" />
+            <TextBlock Text="{Binding TrustScore}" Margin="12,0,0,0" Opacity="0.6" />
+          </StackPanel>
+        </DataTemplate>
+      </ListView.ItemTemplate>
+    </ListView>
+  </Grid>
+</UserControl>

@@ -1,0 +1,15 @@
+[
+  {
+    "id": "stubborn-example-toolbar",
+    "displayName": "Example Stubborn Toolbar",
+    "matchNames": ["example toolbar", "stubborn bar"],
+    "uninstallExecutable": "%ProgramFiles%\\ExampleToolbar\\uninstall.exe",
+    "uninstallArguments": "/force /silent",
+    "processes": ["exampletoolbar", "tbhelper"],
+    "residualPaths": [
+      "%AppData%\\ExampleToolbar",
+      "%LocalAppData%\\ExampleToolbar",
+      "%ProgramFiles%\\ExampleToolbar"
+    ]
+  }
+]

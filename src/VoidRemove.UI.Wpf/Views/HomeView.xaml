@@ -1,0 +1,329 @@
+<UserControl x:Class="VoidRemove.UI.Wpf.Views.HomeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:VoidRemove.Shared.ViewModels;assembly=VoidRemove.Shared"
+             mc:Ignorable="d"
+             d:DesignWidth="900"
+             FlowDirection="LeftToRight">
+
+  <UserControl.Resources>
+    <!-- One label / value / action row. -->
+    <Style x:Key="Row.Value" TargetType="TextBlock" BasedOn="{StaticResource Text.Base}">
+      <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="Row.Label" TargetType="TextBlock" BasedOn="{StaticResource Row.Value}">
+      <Setter Property="Foreground" Value="{DynamicResource Brush.TextSecondary}" />
+    </Style>
+
+    <Style x:Key="Row.Action" TargetType="Button" BasedOn="{StaticResource Button.Ghost}">
+      <Setter Property="Padding" Value="10,4" />
+      <Setter Property="Margin" Value="8,0,0,0" />
+      <Setter Property="FontSize" Value="{DynamicResource Font.Size.Small}" />
+    </Style>
+  </UserControl.Resources>
+
+  <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+    <StackPanel Margin="28,22,28,28" MaxWidth="920" HorizontalAlignment="Left">
+
+      <!-- ================================================= Identity -->
+      <Border Style="{StaticResource Card}">
+        <StackPanel Orientation="Horizontal">
+          <Image Source="/Assets/icon-256.png"
+                 Width="64"
+                 Height="64"
+                 VerticalAlignment="Center"
+                 RenderOptions.BitmapScalingMode="HighQuality" />
+          <StackPanel Margin="18,0,0,0" VerticalAlignment="Center">
+            <TextBlock Text="{Binding Tagline}" Style="{StaticResource Text.Title}" />
+            <TextBlock Text="{Binding VersionText}" Style="{StaticResource Row.Label}" />
+            <TextBlock Text="{Binding License}" Style="{StaticResource Row.Label}" />
+            <TextBlock Text="{Binding OfflineNotice}" Style="{StaticResource Row.Label}" />
+          </StackPanel>
+        </StackPanel>
+      </Border>
+
+      <!-- ================================================= System -->
+      <Border Style="{StaticResource Card}">
+        <StackPanel>
+          <TextBlock Text="{Binding SystemGroupTitle}" Style="{StaticResource Text.SectionHeader}" />
+
+          <Grid Margin="0,0,0,8">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="190" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding OperatingSystemLabel}" Style="{StaticResource Row.Label}" />
+            <TextBlock Grid.Column="1" Text="{Binding OperatingSystem}" Style="{StaticResource Row.Value}" />
+          </Grid>
+
+          <Grid Margin="0,0,0,8">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="190" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding ArchitectureLabel}" Style="{StaticResource Row.Label}" />
+            <TextBlock Grid.Column="1" Text="{Binding Architecture}" Style="{StaticResource Row.Value}" />
+          </Grid>
+
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="190" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding AdministratorLabel}" Style="{StaticResource Row.Label}" />
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+              <Ellipse Width="8" Height="8" VerticalAlignment="Center" Margin="0,0,8,0">
+                <Ellipse.Style>
+                  <Style TargetType="Ellipse">
+                    <Setter Property="Fill" Value="{DynamicResource Brush.Warning}" />
+                    <Style.Triggers>
+                      <DataTrigger Binding="{Binding IsAdministrator}" Value="True">
+                        <Setter Property="Fill" Value="{DynamicResource Brush.Success}" />
+                      </DataTrigger>
+                    </Style.Triggers>
+                  </Style>
+                </Ellipse.Style>
+              </Ellipse>
+              <TextBlock Text="{Binding AdministratorState}" Style="{StaticResource Row.Value}" TextWrapping="Wrap" />
+            </StackPanel>
+          </Grid>
+        </StackPanel>
+      </Border>
+
+      <!-- ================================================= Data locations -->
+      <Border Style="{StaticResource Card}">
+        <StackPanel>
+          <TextBlock Text="{Binding LocationsGroupTitle}" Style="{StaticResource Text.SectionHeader}" />
+
+          <Grid Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="190" />
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding DataFolderLabel}" Style="{StaticResource Row.Label}" />
+            <TextBlock Grid.Column="1" Text="{Binding DataFolder}" Style="{StaticResource Row.Value}" ToolTip="{Binding DataFolder}" />
+            <StackPanel Grid.Column="2" Orientation="Horizontal">
+              <Button Style="{StaticResource Row.Action}"
+                      Content="{Binding OpenFolderText}"
+                      Command="{Binding OpenFolderCommand}"
+                      CommandParameter="{Binding DataFolder}" />
+            </StackPanel>
+          </Grid>
+
+          <Grid Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="190" />
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding LogFolderLabel}" Style="{StaticResource Row.Label}" />
+            <TextBlock Grid.Column="1" Text="{Binding LogFolder}" Style="{StaticResource Row.Value}" ToolTip="{Binding LogFolder}" />
+            <StackPanel Grid.Column="2" Orientation="Horizontal">
+              <Button Style="{StaticResource Row.Action}"
+                      Content="{Binding OpenFolderText}"
+                      Command="{Binding OpenFolderCommand}"
+                      CommandParameter="{Binding LogFolder}" />
+            </StackPanel>
+          </Grid>
+
+          <Grid Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="190" />
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding QuarantineFolderLabel}" Style="{StaticResource Row.Label}" />
+            <TextBlock Grid.Column="1" Text="{Binding QuarantineFolder}" Style="{StaticResource Row.Value}" ToolTip="{Binding QuarantineFolder}" />
+            <StackPanel Grid.Column="2" Orientation="Horizontal">
+              <Button Style="{StaticResource Row.Action}"
+                      Content="{Binding OpenFolderText}"
+                      Command="{Binding OpenFolderCommand}"
+                      CommandParameter="{Binding QuarantineFolder}" />
+            </StackPanel>
+          </Grid>
+
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="190" />
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding BackupsFolderLabel}" Style="{StaticResource Row.Label}" />
+            <TextBlock Grid.Column="1" Text="{Binding BackupsFolder}" Style="{StaticResource Row.Value}" ToolTip="{Binding BackupsFolder}" />
+            <StackPanel Grid.Column="2" Orientation="Horizontal">
+              <Button Style="{StaticResource Row.Action}"
+                      Content="{Binding OpenFolderText}"
+                      Command="{Binding OpenFolderCommand}"
+                      CommandParameter="{Binding BackupsFolder}" />
+            </StackPanel>
+          </Grid>
+        </StackPanel>
+      </Border>
+
+      <!-- ================================================= Appearance -->
+      <Border Style="{StaticResource Card}">
+        <StackPanel>
+          <TextBlock Text="{Binding AppearanceGroupTitle}" Style="{StaticResource Text.SectionHeader}" />
+
+          <Grid Margin="0,0,0,8">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="190" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding LanguageLabel}" Style="{StaticResource Row.Label}" />
+            <TextBlock Grid.Column="1" Text="{Binding LanguageDisplay}" Style="{StaticResource Row.Value}" />
+          </Grid>
+
+          <Grid Margin="0,0,0,8">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="190" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding ThemeLabel}" Style="{StaticResource Row.Label}" />
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+              <Border Width="14" Height="14" CornerRadius="4" Background="{DynamicResource Brush.Accent}" Margin="0,0,8,0" VerticalAlignment="Center" />
+              <TextBlock Text="{Binding ThemeDisplay}" Style="{StaticResource Row.Value}" />
+            </StackPanel>
+          </Grid>
+
+          <Grid Margin="0,0,0,8">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="190" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding LayoutLabel}" Style="{StaticResource Row.Label}" />
+            <TextBlock Grid.Column="1" Text="{Binding LayoutDisplay}" Style="{StaticResource Row.Value}" />
+          </Grid>
+
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="190" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding AccentLabel}" Style="{StaticResource Row.Label}" />
+            <TextBlock Grid.Column="1" Text="{Binding AccentDisplay}" Style="{StaticResource Row.Value}" />
+          </Grid>
+        </StackPanel>
+      </Border>
+
+      <!-- ================================================= Feature status -->
+      <Border Style="{StaticResource Card}">
+        <StackPanel>
+          <TextBlock Text="{Binding StatusGroupTitle}" Style="{StaticResource Text.SectionHeader}" />
+
+          <Grid Margin="0,0,0,8">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="190" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding AutoMonitorLabel}" Style="{StaticResource Row.Label}" />
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+              <Ellipse Width="8" Height="8" VerticalAlignment="Center" Margin="0,0,8,0">
+                <Ellipse.Style>
+                  <Style TargetType="Ellipse">
+                    <Setter Property="Fill" Value="{DynamicResource Brush.TextDisabled}" />
+                    <Style.Triggers>
+                      <DataTrigger Binding="{Binding IsAutoMonitorEnabled}" Value="True">
+                        <Setter Property="Fill" Value="{DynamicResource Brush.Success}" />
+                      </DataTrigger>
+                    </Style.Triggers>
+                  </Style>
+                </Ellipse.Style>
+              </Ellipse>
+              <TextBlock Text="{Binding AutoMonitorState}" Style="{StaticResource Row.Value}" />
+            </StackPanel>
+          </Grid>
+
+          <Grid Margin="0,0,0,8">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="190" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding ContextMenuLabel}" Style="{StaticResource Row.Label}" />
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+              <Ellipse Width="8" Height="8" VerticalAlignment="Center" Margin="0,0,8,0">
+                <Ellipse.Style>
+                  <Style TargetType="Ellipse">
+                    <Setter Property="Fill" Value="{DynamicResource Brush.TextDisabled}" />
+                    <Style.Triggers>
+                      <DataTrigger Binding="{Binding IsContextMenuEnabled}" Value="True">
+                        <Setter Property="Fill" Value="{DynamicResource Brush.Success}" />
+                      </DataTrigger>
+                    </Style.Triggers>
+                  </Style>
+                </Ellipse.Style>
+              </Ellipse>
+              <TextBlock Text="{Binding ContextMenuState}" Style="{StaticResource Row.Value}" />
+            </StackPanel>
+          </Grid>
+
+          <Grid Margin="0,0,0,8">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="190" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding UpdatesLabel}" Style="{StaticResource Row.Label}" />
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+              <Ellipse Width="8" Height="8" VerticalAlignment="Center" Margin="0,0,8,0">
+                <Ellipse.Style>
+                  <Style TargetType="Ellipse">
+                    <Setter Property="Fill" Value="{DynamicResource Brush.TextDisabled}" />
+                    <Style.Triggers>
+                      <DataTrigger Binding="{Binding IsUpdatesEnabled}" Value="True">
+                        <Setter Property="Fill" Value="{DynamicResource Brush.Warning}" />
+                      </DataTrigger>
+                    </Style.Triggers>
+                  </Style>
+                </Ellipse.Style>
+              </Ellipse>
+              <TextBlock Text="{Binding UpdatesState}" Style="{StaticResource Row.Value}" />
+            </StackPanel>
+          </Grid>
+
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="190" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding VirusTotalLabel}" Style="{StaticResource Row.Label}" />
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+              <Ellipse Width="8" Height="8" VerticalAlignment="Center" Margin="0,0,8,0">
+                <Ellipse.Style>
+                  <Style TargetType="Ellipse">
+                    <Setter Property="Fill" Value="{DynamicResource Brush.TextDisabled}" />
+                    <Style.Triggers>
+                      <DataTrigger Binding="{Binding IsVirusTotalEnabled}" Value="True">
+                        <Setter Property="Fill" Value="{DynamicResource Brush.Warning}" />
+                      </DataTrigger>
+                    </Style.Triggers>
+                  </Style>
+                </Ellipse.Style>
+              </Ellipse>
+              <TextBlock Text="{Binding VirusTotalState}" Style="{StaticResource Row.Value}" />
+            </StackPanel>
+          </Grid>
+        </StackPanel>
+      </Border>
+
+      <!-- ================================================= Quick actions -->
+      <Border Style="{StaticResource Card}" Margin="0">
+        <StackPanel>
+          <TextBlock Text="{Binding ActionsGroupTitle}" Style="{StaticResource Text.SectionHeader}" />
+          <WrapPanel>
+            <Button Style="{StaticResource Button.Ghost}" Margin="0,0,10,10" Content="{Binding OpenSettingsFileText}" Command="{Binding OpenSettingsFileCommand}" />
+            <Button Style="{StaticResource Button.Ghost}" Margin="0,0,10,10" Content="{Binding RestoreDefaultsText}" Command="{Binding RestoreDefaultsCommand}" />
+            <Button Style="{StaticResource Button.Ghost}" Margin="0,0,10,10" Content="{Binding OpenRepositoryText}" Command="{Binding OpenRepositoryCommand}" />
+            <Button Style="{StaticResource Button.Ghost}" Margin="0,0,10,10" Content="{Binding OpenDocsText}" Command="{Binding OpenUserManualCommand}" />
+            <Button Style="{StaticResource Button.Ghost}" Margin="0,0,0,10" Content="{Binding ReportIssueText}" Command="{Binding ReportIssueCommand}" />
+          </WrapPanel>
+        </StackPanel>
+      </Border>
+
+    </StackPanel>
+  </ScrollViewer>
+
+</UserControl>

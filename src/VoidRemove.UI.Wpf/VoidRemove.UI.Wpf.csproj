@@ -1,0 +1,60 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <RootNamespace>VoidRemove.UI.Wpf</RootNamespace>
+    <AssemblyName>VoidRemove.Wpf</AssemblyName>
+    <UseWPF>true</UseWPF>
+    <!-- NotifyIcon for the tray lives in WinForms. -->
+    <UseWindowsForms>true</UseWindowsForms>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>..\..\assets\icon.ico</ApplicationIcon>
+    <Description>WPF front end for VoidRemove.</Description>
+    <RuntimeIdentifiers>win-x64;win-arm64</RuntimeIdentifiers>
+    <SatelliteResourceLanguages>en;ar</SatelliteResourceLanguages>
+  </PropertyGroup>
+
+  <!-- WinForms would inject global usings (System.Windows.Forms / System.Drawing) that collide
+       with WPF types. The SDK adds them during targets, so strip them from a target too. -->
+  <Target Name="VoidRemoveDropWinFormsUsings" BeforeTargets="PrepareForBuild">
+    <ItemGroup>
+      <Using Remove="System.Windows.Forms" />
+      <Using Remove="System.Drawing" />
+    </ItemGroup>
+  </Target>
+
+  <!-- Single file, self contained publishing. The release workflow overrides AssemblyName
+       to produce VoidRemove-Wpf-x64.exe. -->
+  <PropertyGroup Condition="'$(PublishSingleFile)' == 'true'">
+    <SelfContained>true</SelfContained>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VoidRemove.Core\VoidRemove.Core.csproj" />
+    <ProjectReference Include="..\VoidRemove.Shared\VoidRemove.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Serilog" />
+    <PackageReference Include="Serilog.Extensions.Logging" />
+    <PackageReference Include="Serilog.Sinks.File" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Brand mark used by the splash, the title bar and the sidebar. -->
+    <Resource Include="..\..\assets\png\icon-256.png" Link="Assets\icon-256.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Editable data (profiles, stubborn, bundleware) ships next to the executable. -->
+    <None Include="..\..\data\**\*.json" Link="data\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

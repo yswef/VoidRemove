@@ -1,0 +1,65 @@
+# ---------- .NET build output ----------
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+[Aa]rtifacts/
+[Pp]ublish/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+arm64/
+*.binlog
+*.log
+*.tlog
+
+# ---------- Test output ----------
+[Tt]est[Rr]esults/
+*.trx
+*.coverage
+*.coveragexml
+coverage*.json
+coverage*.xml
+coverage*.info
+
+# ---------- Visual Studio / Rider / VS Code ----------
+.vs/
+.vscode/
+.idea/
+*.user
+*.userosscache
+*.suo
+*.userprefs
+*.sln.docstates
+_ReSharper*/
+*.DotSettings.user
+BenchmarkDotNet.Artifacts/
+
+# ---------- Windows App SDK / MSIX ----------
+*.msix
+*.msixbundle
+*.appx
+*.appxbundle
+BundleArtifacts/
+Generated Files/
+
+# ---------- Python tooling (tools/*.py) ----------
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.mypy_cache/
+.pytest_cache/
+
+# ---------- MkDocs ----------
+site/
+
+# ---------- OS noise ----------
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# ---------- Local secrets (never commit) ----------
+*.pfx
+secrets.json
+appsettings.local.json

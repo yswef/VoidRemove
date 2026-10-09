@@ -1,0 +1,66 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build artifacts and publish release
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Publish WPF (x64, single file)
+        run: >
+          dotnet publish src/VoidRemove.UI.Wpf -c Release -r win-x64 --self-contained true
+          -p:PublishSingleFile=true -p:AssemblyName=VoidRemove-Wpf-x64 -o publish/wpf
+
+      - name: Publish WPF (arm64, single file)
+        run: >
+          dotnet publish src/VoidRemove.UI.Wpf -c Release -r win-arm64 --self-contained true
+          -p:PublishSingleFile=true -p:AssemblyName=VoidRemove-Wpf-arm64 -o publish/wpf-arm64
+
+      - name: Publish WinUI (x64, single file)
+        run: >
+          dotnet publish src/VoidRemove.UI.WinUI -c Release -r win-x64 --self-contained true
+          -p:PublishSingleFile=true -p:AssemblyName=VoidRemove-WinUI-x64 -o publish/winui
+
+      - name: Install Inno Setup
+        run: choco install innosetup -y --no-progress
+
+      - name: Build installer
+        run: iscc installer\setup.iss
+
+      - name: Compute SHA-256 checksums
+        shell: pwsh
+        run: |
+          $files = Get-ChildItem -Path publish -Recurse -File |
+            Where-Object { $_.Extension -in ".exe" }
+          $lines = $files | ForEach-Object {
+            $hash = (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLower()
+            "$hash  $($_.Name)"
+          }
+          $lines | Out-File -Encoding utf8 publish/SHA256SUMS.txt
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >
+          gh release create "${{ github.ref_name }}"
+          publish/wpf/VoidRemove-Wpf-x64.exe
+          publish/wpf-arm64/VoidRemove-Wpf-arm64.exe
+          publish/winui/VoidRemove-WinUI-x64.exe
+          publish/installer/VoidRemove-Setup.exe
+          publish/SHA256SUMS.txt
+          --title "VoidRemove ${{ github.ref_name }}"
+          --generate-notes

@@ -1,0 +1,219 @@
+<Page x:Class="VoidRemove.UI.WinUI.Views.HomePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d"
+      FlowDirection="LeftToRight">
+
+  <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+    <StackPanel Margin="28,22,28,28" MaxWidth="920" HorizontalAlignment="Left">
+
+      <!-- Identity -->
+      <Border Style="{StaticResource Card}">
+        <StackPanel Orientation="Horizontal">
+          <Image Source="ms-appx:///Assets/icon-256.png" Width="64" Height="64" VerticalAlignment="Center" />
+          <StackPanel Margin="18,0,0,0" VerticalAlignment="Center">
+            <TextBlock Text="{Binding Tagline}" Style="{StaticResource Text.Title}" />
+            <TextBlock Text="{Binding VersionText}" Style="{StaticResource Text.Label}" />
+            <TextBlock Text="{Binding License}" Style="{StaticResource Text.Label}" />
+            <TextBlock Text="{Binding OfflineNotice}" Style="{StaticResource Text.Label}" />
+          </StackPanel>
+        </StackPanel>
+      </Border>
+
+      <!-- System -->
+      <Border Style="{StaticResource Card}">
+        <StackPanel>
+          <TextBlock Text="{Binding SystemGroupTitle}" Style="{StaticResource Text.SectionHeader}" />
+
+          <Grid Margin="0,0,0,8">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="190" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding OperatingSystemLabel}" Style="{StaticResource Text.Label}" VerticalAlignment="Center" />
+            <TextBlock Grid.Column="1" Text="{Binding OperatingSystem}" Style="{StaticResource Text.Value}" />
+          </Grid>
+
+          <Grid Margin="0,0,0,8">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="190" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding ArchitectureLabel}" Style="{StaticResource Text.Label}" VerticalAlignment="Center" />
+            <TextBlock Grid.Column="1" Text="{Binding Architecture}" Style="{StaticResource Text.Value}" />
+          </Grid>
+
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="190" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding AdministratorLabel}" Style="{StaticResource Text.Label}" VerticalAlignment="Center" />
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+              <Ellipse x:Name="AdminDot" Width="8" Height="8" VerticalAlignment="Center" Margin="0,0,8,0" Fill="{StaticResource Brush.Warning}" />
+              <TextBlock Text="{Binding AdministratorState}" Style="{StaticResource Text.Value}" TextWrapping="Wrap" />
+            </StackPanel>
+          </Grid>
+        </StackPanel>
+      </Border>
+
+      <!-- Data locations -->
+      <Border Style="{StaticResource Card}">
+        <StackPanel>
+          <TextBlock Text="{Binding LocationsGroupTitle}" Style="{StaticResource Text.SectionHeader}" />
+
+          <Grid Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="190" />
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding DataFolderLabel}" Style="{StaticResource Text.Label}" VerticalAlignment="Center" />
+            <TextBlock Grid.Column="1" Text="{Binding DataFolder}" Style="{StaticResource Text.Value}" />
+            <Button Grid.Column="2" Content="{Binding OpenFolderText}" Command="{Binding OpenFolderCommand}" CommandParameter="{Binding DataFolder}" Margin="8,0,0,0" />
+          </Grid>
+
+          <Grid Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="190" />
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding LogFolderLabel}" Style="{StaticResource Text.Label}" VerticalAlignment="Center" />
+            <TextBlock Grid.Column="1" Text="{Binding LogFolder}" Style="{StaticResource Text.Value}" />
+            <Button Grid.Column="2" Content="{Binding OpenFolderText}" Command="{Binding OpenFolderCommand}" CommandParameter="{Binding LogFolder}" Margin="8,0,0,0" />
+          </Grid>
+
+          <Grid Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="190" />
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding QuarantineFolderLabel}" Style="{StaticResource Text.Label}" VerticalAlignment="Center" />
+            <TextBlock Grid.Column="1" Text="{Binding QuarantineFolder}" Style="{StaticResource Text.Value}" />
+            <Button Grid.Column="2" Content="{Binding OpenFolderText}" Command="{Binding OpenFolderCommand}" CommandParameter="{Binding QuarantineFolder}" Margin="8,0,0,0" />
+          </Grid>
+
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="190" />
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding BackupsFolderLabel}" Style="{StaticResource Text.Label}" VerticalAlignment="Center" />
+            <TextBlock Grid.Column="1" Text="{Binding BackupsFolder}" Style="{StaticResource Text.Value}" />
+            <Button Grid.Column="2" Content="{Binding OpenFolderText}" Command="{Binding OpenFolderCommand}" CommandParameter="{Binding BackupsFolder}" Margin="8,0,0,0" />
+          </Grid>
+        </StackPanel>
+      </Border>
+
+      <!-- Appearance -->
+      <Border Style="{StaticResource Card}">
+        <StackPanel>
+          <TextBlock Text="{Binding AppearanceGroupTitle}" Style="{StaticResource Text.SectionHeader}" />
+
+          <Grid Margin="0,0,0,8">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="190" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding LanguageLabel}" Style="{StaticResource Text.Label}" VerticalAlignment="Center" />
+            <TextBlock Grid.Column="1" Text="{Binding LanguageDisplay}" Style="{StaticResource Text.Value}" />
+          </Grid>
+
+          <Grid Margin="0,0,0,8">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="190" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding ThemeLabel}" Style="{StaticResource Text.Label}" VerticalAlignment="Center" />
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+              <Border Width="14" Height="14" CornerRadius="4" Background="{StaticResource Brush.Accent}" Margin="0,0,8,0" VerticalAlignment="Center" />
+              <TextBlock Text="{Binding ThemeDisplay}" Style="{StaticResource Text.Value}" />
+            </StackPanel>
+          </Grid>
+
+          <Grid Margin="0,0,0,8">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="190" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding LayoutLabel}" Style="{StaticResource Text.Label}" VerticalAlignment="Center" />
+            <TextBlock Grid.Column="1" Text="{Binding LayoutDisplay}" Style="{StaticResource Text.Value}" />
+          </Grid>
+
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="190" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding AccentLabel}" Style="{StaticResource Text.Label}" VerticalAlignment="Center" />
+            <TextBlock Grid.Column="1" Text="{Binding AccentDisplay}" Style="{StaticResource Text.Value}" />
+          </Grid>
+        </StackPanel>
+      </Border>
+
+      <!-- Feature status -->
+      <Border Style="{StaticResource Card}">
+        <StackPanel>
+          <TextBlock Text="{Binding StatusGroupTitle}" Style="{StaticResource Text.SectionHeader}" />
+
+          <Grid Margin="0,0,0,8">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="190" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding AutoMonitorLabel}" Style="{StaticResource Text.Label}" VerticalAlignment="Center" />
+            <TextBlock Grid.Column="1" Text="{Binding AutoMonitorState}" Style="{StaticResource Text.Value}" />
+          </Grid>
+
+          <Grid Margin="0,0,0,8">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="190" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding ContextMenuLabel}" Style="{StaticResource Text.Label}" VerticalAlignment="Center" />
+            <TextBlock Grid.Column="1" Text="{Binding ContextMenuState}" Style="{StaticResource Text.Value}" />
+          </Grid>
+
+          <Grid Margin="0,0,0,8">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="190" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding UpdatesLabel}" Style="{StaticResource Text.Label}" VerticalAlignment="Center" />
+            <TextBlock Grid.Column="1" Text="{Binding UpdatesState}" Style="{StaticResource Text.Value}" />
+          </Grid>
+
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="190" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding VirusTotalLabel}" Style="{StaticResource Text.Label}" VerticalAlignment="Center" />
+            <TextBlock Grid.Column="1" Text="{Binding VirusTotalState}" Style="{StaticResource Text.Value}" />
+          </Grid>
+        </StackPanel>
+      </Border>
+
+      <!-- Quick actions -->
+      <Border Style="{StaticResource Card}" Margin="0">
+        <StackPanel>
+          <TextBlock Text="{Binding ActionsGroupTitle}" Style="{StaticResource Text.SectionHeader}" />
+          <VariableSizedWrapGrid Orientation="Horizontal" MaximumRowsOrColumns="6" ItemHeight="34">
+            <Button Content="{Binding OpenSettingsFileText}" Command="{Binding OpenSettingsFileCommand}" Margin="0,0,10,0" />
+            <Button Content="{Binding RestoreDefaultsText}" Command="{Binding RestoreDefaultsCommand}" Margin="0,0,10,0" />
+            <Button Content="{Binding OpenRepositoryText}" Command="{Binding OpenRepositoryCommand}" Margin="0,0,10,0" />
+            <Button Content="{Binding OpenDocsText}" Command="{Binding OpenUserManualCommand}" Margin="0,0,10,0" />
+            <Button Content="{Binding ReportIssueText}" Command="{Binding ReportIssueCommand}" />
+          </VariableSizedWrapGrid>
+        </StackPanel>
+      </Border>
+
+    </StackPanel>
+  </ScrollViewer>
+
+</Page>

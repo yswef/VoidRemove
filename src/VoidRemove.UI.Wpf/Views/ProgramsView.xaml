@@ -1,0 +1,37 @@
+<UserControl x:Class="VoidRemove.UI.Wpf.Views.ProgramsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Grid Margin="28">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+
+    <TextBlock Grid.Row="0" Style="{StaticResource Text.Title}" Text="{Binding Title}" />
+
+    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,12,0,12">
+      <TextBox Style="{StaticResource Input.TextBox}" Width="240"
+               Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}" />
+      <Button Style="{StaticResource Button.Ghost}" Content="All" Command="{Binding SetTabCommand}" CommandParameter="all" Margin="12,0,0,0" />
+      <Button Style="{StaticResource Button.Ghost}" Content="Bundleware" Command="{Binding SetTabCommand}" CommandParameter="bundleware" Margin="6,0,0,0" />
+      <Button Style="{StaticResource Button.Ghost}" Content="Recent" Command="{Binding SetTabCommand}" CommandParameter="recent" Margin="6,0,0,0" />
+      <Button Style="{StaticResource Button.Ghost}" Content="Large" Command="{Binding SetTabCommand}" CommandParameter="large" Margin="6,0,0,0" />
+      <Button Style="{StaticResource Button.Ghost}" Content="⟳" Command="{Binding RefreshCommand}" Margin="6,0,0,0" />
+      <Button Style="{StaticResource Button.Primary}" Content="Uninstall" Command="{Binding UninstallSelectedCommand}" Margin="18,0,0,0" />
+    </StackPanel>
+
+    <ListView Grid.Row="2" ItemsSource="{Binding Programs}" SelectedItem="{Binding SelectedItem}"
+              Background="Transparent" BorderThickness="0">
+      <ListView.View>
+        <GridView>
+          <GridViewColumn Header="Name" Width="220" DisplayMemberBinding="{Binding DisplayName}" />
+          <GridViewColumn Header="Publisher" Width="160" DisplayMemberBinding="{Binding Publisher}" />
+          <GridViewColumn Header="Version" Width="90" DisplayMemberBinding="{Binding Version}" />
+          <GridViewColumn Header="Size" Width="90" DisplayMemberBinding="{Binding SizeText}" />
+          <GridViewColumn Header="Tags" Width="160" DisplayMemberBinding="{Binding Tags}" />
+        </GridView>
+      </ListView.View>
+    </ListView>
+  </Grid>
+</UserControl>

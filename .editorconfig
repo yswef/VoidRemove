@@ -1,0 +1,92 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+
+[*.{json,yml,yaml,csproj,props,targets,xaml,manifest,iss}]
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.sln]
+end_of_line = crlf
+indent_style = tab
+
+[*.{bat,cmd,ps1}]
+end_of_line = crlf
+
+# ---------------------------------------------------------------- C#
+
+[*.cs]
+indent_size = 4
+csharp_new_line_before_open_brace = all
+csharp_new_line_before_else = true
+csharp_new_line_before_catch = true
+csharp_new_line_before_finally = true
+csharp_indent_case_contents = true
+csharp_indent_switch_labels = true
+csharp_style_namespace_declarations = file_scoped:suggestion
+csharp_style_var_for_built_in_types = true:suggestion
+csharp_style_var_when_type_is_apparent = true:suggestion
+csharp_prefer_braces = true:warning
+csharp_style_expression_bodied_methods = when_on_single_line:suggestion
+csharp_style_expression_bodied_properties = true:suggestion
+csharp_style_expression_bodied_accessors = true:suggestion
+csharp_style_throw_expression = true:suggestion
+csharp_style_conditional_delegate_call = true:suggestion
+csharp_using_directive_placement = outside_namespace:warning
+csharp_prefer_simple_using_statement = true:suggestion
+
+dotnet_sort_system_directives_first = true
+dotnet_separate_import_directive_groups = false
+
+dotnet_style_qualification_for_field = false:warning
+dotnet_style_qualification_for_property = false:warning
+dotnet_style_qualification_for_method = false:warning
+dotnet_style_qualification_for_event = false:warning
+dotnet_style_predefined_type_for_locals_parameters_members = true:warning
+dotnet_style_predefined_type_for_member_access = true:warning
+dotnet_style_require_accessibility_modifiers = always:warning
+dotnet_style_object_initializer = true:suggestion
+dotnet_style_collection_initializer = true:suggestion
+dotnet_style_explicit_tuple_names = true:warning
+dotnet_style_readonly_field = true:warning
+dotnet_style_null_propagation = true:suggestion
+dotnet_style_coalesce_expression = true:suggestion
+
+# Naming
+dotnet_naming_rule.private_fields_underscored.severity = suggestion
+dotnet_naming_rule.private_fields_underscored.symbols = private_fields
+dotnet_naming_rule.private_fields_underscored.style = underscore_camel_case
+dotnet_naming_symbols.private_fields.applicable_kinds = field
+dotnet_naming_symbols.private_fields.applicable_accessibilities = private
+dotnet_naming_style.underscore_camel_case.required_prefix = _
+dotnet_naming_style.underscore_camel_case.capitalization = camel_case
+
+dotnet_naming_rule.constants_pascal.severity = warning
+dotnet_naming_rule.constants_pascal.symbols = constants
+dotnet_naming_rule.constants_pascal.style = pascal_case
+dotnet_naming_symbols.constants.applicable_kinds = field
+dotnet_naming_symbols.constants.applicable_accessibilities = *
+dotnet_naming_symbols.constants.required_modifiers = const
+dotnet_naming_style.pascal_case.capitalization = pascal_case
+
+dotnet_naming_rule.interfaces_prefixed.severity = warning
+dotnet_naming_rule.interfaces_prefixed.symbols = interfaces
+dotnet_naming_rule.interfaces_prefixed.style = i_prefix_pascal
+dotnet_naming_symbols.interfaces.applicable_kinds = interface
+dotnet_naming_symbols.interfaces.applicable_accessibilities = *
+dotnet_naming_style.i_prefix_pascal.required_prefix = I
+dotnet_naming_style.i_prefix_pascal.capitalization = pascal_case
+
+# Diagnostics
+dotnet_diagnostic.CA1848.severity = none      # LoggerMessage delegates: not worth it here
+dotnet_diagnostic.CA2254.severity = none      # log message templates as constants
+dotnet_diagnostic.CS1591.severity = none      # missing XML docs (docs are off by design)
+dotnet_diagnostic.IDE0079.severity = none     # unnecessary suppression

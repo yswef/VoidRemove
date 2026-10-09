@@ -1,0 +1,209 @@
+<Window x:Class="VoidRemove.UI.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:icons="clr-namespace:VoidRemove.Shared.Icons;assembly=VoidRemove.Shared"
+        xmlns:vm="clr-namespace:VoidRemove.Shared.ViewModels;assembly=VoidRemove.Shared"
+        xmlns:wpfvm="clr-namespace:VoidRemove.Core.ViewModels;assembly=VoidRemove.Core"
+        xmlns:views="clr-namespace:VoidRemove.UI.Wpf.Views"
+        Title="{Binding WindowTitle}"
+        Width="1180"
+        Height="760"
+        MinWidth="980"
+        MinHeight="620"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        Background="{DynamicResource Brush.Window}"
+        FontFamily="{DynamicResource Font.Family}"
+        TextOptions.TextFormattingMode="Ideal"
+        UseLayoutRounding="True"
+        SnapsToDevicePixels="True"
+        FlowDirection="LeftToRight"
+        StateChanged="OnStateChanged"
+        Closing="OnClosing">
+
+  <WindowChrome.WindowChrome>
+    <!--
+      Custom chrome: the title bar below is ours, the resize border is Windows'.
+      CaptionHeight matches Metric.TitleBarHeight; it is a literal because WindowChrome
+      is a Freezable and cannot resolve DynamicResource.
+    -->
+    <WindowChrome CaptionHeight="40"
+                  ResizeBorderThickness="6"
+                  CornerRadius="0"
+                  GlassFrameThickness="0"
+                  UseAeroCaptionButtons="False" />
+  </WindowChrome.WindowChrome>
+
+  <Window.Resources>
+    <DataTemplate DataType="{x:Type vm:HomeViewModel}">
+      <views:HomeView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
+      <views:SettingsView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type wpfvm:ProgramsViewModel}">
+      <views:ProgramsView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type wpfvm:TotalUninstallViewModel}">
+      <views:TotalUninstallView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type wpfvm:ResetAppViewModel}">
+      <views:ResetAppView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type wpfvm:HealthViewModel}">
+      <views:HealthView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type wpfvm:MonitorViewModel}">
+      <views:MonitorView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type wpfvm:ExtensionsViewModel}">
+      <views:ExtensionsView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type wpfvm:WindowsAppsViewModel}">
+      <views:WindowsAppsView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type wpfvm:ToolboxViewModel}">
+      <views:ToolboxView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type wpfvm:ActionCenterViewModel}">
+      <views:ActionCenterView />
+    </DataTemplate>
+  </Window.Resources>
+
+  <Border BorderBrush="{DynamicResource Brush.Border}" BorderThickness="1">
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="40" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+
+      <!-- =================================================== Title bar -->
+      <Border Grid.Row="0" Background="{DynamicResource Brush.TitleBar}">
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
+
+          <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="16,0,0,0">
+            <Image Source="/Assets/icon-256.png"
+                   Width="16"
+                   Height="16"
+                   VerticalAlignment="Center"
+                   RenderOptions.BitmapScalingMode="HighQuality" />
+            <TextBlock Text="{Binding ProductName}"
+                       Style="{StaticResource Text.Base}"
+                       FontSize="12.5"
+                       FontWeight="SemiBold"
+                       Margin="9,0,0,0"
+                       VerticalAlignment="Center" />
+            <TextBlock Text="{Binding VersionText}"
+                       Style="{StaticResource Text.Base}"
+                       FontSize="11"
+                       Foreground="{DynamicResource Brush.TextDisabled}"
+                       Margin="9,0,0,0"
+                       VerticalAlignment="Center" />
+          </StackPanel>
+
+          <StackPanel Grid.Column="1"
+                      Orientation="Horizontal"
+                      WindowChrome.IsHitTestVisibleInChrome="True">
+            <Button Style="{StaticResource Button.Icon}" Click="OnMinimizeClick">
+              <Path Style="{StaticResource TitleBar.Glyph}" Data="{x:Static icons:IconGeometry.Minimize}" />
+            </Button>
+            <Button Style="{StaticResource Button.Icon}" Click="OnMaximizeClick">
+              <Path x:Name="MaximizeGlyph" Style="{StaticResource TitleBar.Glyph}" Data="{x:Static icons:IconGeometry.Maximize}" />
+            </Button>
+            <Button Style="{StaticResource Button.TitleBarClose}" Click="OnCloseClick">
+              <Path Style="{StaticResource TitleBar.Glyph}" Data="{x:Static icons:IconGeometry.Close}" />
+            </Button>
+          </StackPanel>
+        </Grid>
+      </Border>
+
+      <!-- =================================================== Body -->
+      <Grid Grid.Row="1">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Sidebar -->
+        <Border Grid.Column="0"
+                Width="{DynamicResource Metric.SidebarWidth}"
+                Background="{DynamicResource Brush.Sidebar}"
+                BorderBrush="{DynamicResource Brush.Divider}"
+                BorderThickness="0,0,1,0">
+          <Grid>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="*" />
+              <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Margin="20,18,20,10">
+              <StackPanel Orientation="Horizontal">
+                <Path Data="{x:Static icons:IconGeometry.Logo}"
+                      Stroke="{DynamicResource Brush.Accent}"
+                      StrokeThickness="1.7"
+                      StrokeStartLineCap="Round"
+                      StrokeEndLineCap="Round"
+                      Width="22"
+                      Height="22"
+                      Stretch="Uniform" />
+                <TextBlock Text="{Binding ProductName}"
+                           Style="{StaticResource Text.Base}"
+                           FontSize="16"
+                           FontWeight="SemiBold"
+                           Margin="10,0,0,0"
+                           VerticalAlignment="Center" />
+              </StackPanel>
+              <TextBlock Text="{Binding Tagline}"
+                         Style="{StaticResource Text.Hint}"
+                         FontSize="11"
+                         Margin="0,6,0,0" />
+            </StackPanel>
+
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+              <ItemsControl ItemsSource="{Binding Groups}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <StackPanel Margin="0,0,0,4">
+                      <TextBlock Text="{Binding Title}" Style="{StaticResource Text.GroupHeader}" />
+                      <ListBox Style="{StaticResource Nav.ListBox}"
+                               ItemsSource="{Binding Items}"
+                               ItemTemplate="{StaticResource Nav.Template}"
+                               SelectedItem="{Binding DataContext.SelectedItem, RelativeSource={RelativeSource AncestorType=Window}, Mode=TwoWay}" />
+                    </StackPanel>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </ScrollViewer>
+
+            <Border Grid.Row="2" BorderBrush="{DynamicResource Brush.Divider}" BorderThickness="0,1,0,0" Padding="20,12">
+              <TextBlock Text="{Binding OfflineNotice}" Style="{StaticResource Text.Hint}" FontSize="11" />
+            </Border>
+          </Grid>
+        </Border>
+
+        <!-- Content -->
+        <ContentControl Grid.Column="1" Content="{Binding CurrentPage}" Focusable="False" />
+      </Grid>
+
+      <!-- =================================================== Toast host -->
+      <Border x:Name="ToastHost"
+              Grid.Row="1"
+              Style="{StaticResource Toast}"
+              Visibility="Collapsed"
+              Opacity="0">
+        <StackPanel Orientation="Horizontal">
+          <Ellipse x:Name="ToastDot" Width="8" Height="8" VerticalAlignment="Center" Margin="0,0,10,0" Fill="{DynamicResource Brush.Accent}" />
+          <TextBlock x:Name="ToastText" Style="{StaticResource Text.Base}" VerticalAlignment="Center" MaxWidth="520" TextWrapping="Wrap" />
+        </StackPanel>
+      </Border>
+
+    </Grid>
+  </Border>
+
+</Window>

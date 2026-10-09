@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "id": "chromium-family",
+  "displayName": "Chromium-family browsers",
+  "matchNames": ["chrome", "chromium", "edge", "brave", "opera", "vivaldi"],
+  "locations": [
+    { "kind": "Folder", "path": "%LocalAppData%\\Google\\Chrome\\User Data", "optional": true },
+    { "kind": "Folder", "path": "%AppData%\\Google\\Chrome", "optional": true },
+    { "kind": "Folder", "path": "%LocalAppData%\\Microsoft\\Edge\\User Data", "optional": true },
+    { "kind": "Folder", "path": "%LocalAppData%\\BraveSoftware\\Brave-Browser\\User Data", "optional": true },
+    { "kind": "Folder", "path": "%AppData%\\Opera Software\\Opera Stable", "optional": true }
+  ]
+}
