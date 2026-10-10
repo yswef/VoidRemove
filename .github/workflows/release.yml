@@ -51,7 +51,19 @@ jobs:
         run: Rename-Item publish/winui/VoidRemove.WinUI.exe VoidRemove-WinUI-x64.exe
 
       - name: Install Inno Setup
-        run: choco install innosetup -y --no-progress
+        shell: pwsh
+        run: |
+          choco install innosetup -y --no-progress
+          # Inno Setup installs to a fixed path; make sure the directory is on PATH
+          # for this step and the next (choco does not always refresh PATH).
+          $isccDir = "C:\Program Files (x86)\Inno Setup 6"
+          if (Test-Path $isccDir) {
+            echo $isccDir >> $env:GITHUB_PATH
+            Write-Output "Added $isccDir to PATH"
+          } else {
+            Write-Error "Inno Setup 6 directory not found at $isccDir"
+            exit 1
+          }
 
       - name: Build installer
         run: iscc installer\setup.iss
