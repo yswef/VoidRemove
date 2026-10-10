@@ -235,7 +235,7 @@ jobs:
 
       - name: Upload build outputs for diagnosis
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: VoidRemove-${{ steps.release-meta.outputs.tag }}-build
           path: |
