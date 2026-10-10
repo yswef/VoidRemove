@@ -50,20 +50,62 @@ jobs:
         shell: pwsh
         run: Rename-Item publish/winui/VoidRemove.WinUI.exe VoidRemove-WinUI-x64.exe
 
-      - name: Install Inno Setup
+      - name: Prepare Inno Setup
         shell: pwsh
         run: |
-          choco install innosetup -y --no-progress
-          # Inno Setup installs to a fixed path; make sure the directory is on PATH
-          # for this step and the next (choco does not always refresh PATH).
-          $isccDir = "C:\Program Files (x86)\Inno Setup 6"
-          if (Test-Path $isccDir) {
-            echo $isccDir >> $env:GITHUB_PATH
-            Write-Output "Added $isccDir to PATH"
-          } else {
-            Write-Error "Inno Setup 6 directory not found at $isccDir"
+          # windows-latest ships with Inno Setup 6 pre-installed.
+          # Prefer the pre-installed copy; fall back to choco only if needed.
+          $candidates = @(
+            "C:\Program Files (x86)\Inno Setup 6",
+            "C:\Program Files\Inno Setup 6"
+          )
+          $found = $null
+          foreach ($dir in $candidates) {
+            if (Test-Path "$dir\ISCC.exe") {
+              $found = $dir
+              break
+            }
+          }
+          if (-not $found) {
+            Write-Output "Inno Setup not pre-installed, installing via choco..."
+            choco install innosetup -y --no-progress
+            foreach ($dir in $candidates) {
+              if (Test-Path "$dir\ISCC.exe") {
+                $found = $dir
+                break
+              }
+            }
+          }
+          if (-not $found) {
+            Write-Error "Could not locate ISCC.exe after install"
             exit 1
           }
+          Write-Output "Found Inno Setup at: $found"
+          echo $found >> $env:GITHUB_PATH
+
+      - name: Verify published artifacts
+        shell: pwsh
+        run: |
+          Write-Output "=== Checking expected files before Inno Setup ==="
+          $expected = @(
+            "publish\wpf\VoidRemove-Wpf-x64.exe",
+            "publish\winui\VoidRemove-WinUI-x64.exe",
+            "data\bundleware.json",
+            "assets\icon.ico",
+            "assets\setup-wizard.bmp",
+            "assets\setup-header.bmp",
+            "LICENSE"
+          )
+          foreach ($f in $expected) {
+            if (Test-Path $f) {
+              $size = (Get-Item $f).Length
+              Write-Output "  OK  $f ($size bytes)"
+            } else {
+              Write-Output "  MISSING  $f"
+            }
+          }
+          Write-Output "=== iscc version ==="
+          iscc /? 2>&1 | Select-Object -First 3
 
       - name: Build installer
         run: iscc installer\setup.iss
