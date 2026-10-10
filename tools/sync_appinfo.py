@@ -159,7 +159,9 @@ def main() -> int:
     constants = parse_constants(APPINFO_CS.read_text(encoding="utf-8"))
     version = read_version()
 
-    ini_bytes = b"\xef\xbb\xbf" + build_ini(constants, version).encode("utf-8")
+    # Use plain UTF-8 without BOM so Inno Setup's ReadIni can parse the file
+    # regardless of whether it ships with the legacy ANSI compiler or ISCC 6.
+    ini_bytes = build_ini(constants, version).encode("utf-8")
     json_bytes = (
         json.dumps({"version": version, "constants": constants}, ensure_ascii=False, indent=2) + "\n"
     ).encode("utf-8")
