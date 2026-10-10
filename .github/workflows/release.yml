@@ -108,35 +108,19 @@ jobs:
           iscc /? 2>&1 | Select-Object -First 3
 
       - name: Build installer
-        shell: pwsh
+        shell: cmd
         run: |
-          Write-Output "=== Running ISCC ==="
-          Write-Output "Working directory: $(Get-Location)"
-          $iscc = (Get-Command iscc -ErrorAction Stop).Source
-          Write-Output "ISCC path: $iscc"
-          Write-Output "ISS file exists: $(Test-Path installer\setup.iss)"
-          Write-Output ""
-          Write-Output "=== ISCC output ==="
-          $proc = Start-Process -FilePath $iscc -ArgumentList "installer\setup.iss" -NoNewWindow -Wait -PassThru -RedirectStandardOutput "iscc_stdout.txt" -RedirectStandardError "iscc_stderr.txt"
-          Write-Output "Exit code: $($proc.ExitCode)"
-          Write-Output ""
-          Write-Output "=== ISCC stdout ==="
-          Get-Content iscc_stdout.txt -ErrorAction SilentlyContinue
-          Write-Output ""
-          Write-Output "=== ISCC stderr ==="
-          Get-Content iscc_stderr.txt -ErrorAction SilentlyContinue
-          if ($proc.ExitCode -ne 0) {
-            exit $proc.ExitCode
-          }
-
-      - name: Upload ISCC logs on failure
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: iscc-logs
-          path: |
-            iscc_stdout.txt
-            iscc_stderr.txt
+          echo === Running ISCC ===
+          echo Working directory: %CD%
+          where iscc
+          echo.
+          echo === ISCC output ===
+          iscc installer\setup.iss
+          echo ISCC exit code: %ERRORLEVEL%
+          if %ERRORLEVEL% neq 0 (
+            echo ISCC FAILED
+            exit /b %ERRORLEVEL%
+          )
 
       - name: Compute SHA-256 checksums
         shell: pwsh
