@@ -58,5 +58,15 @@ The layout stays left-to-right in every language; only text direction within a s
 
 ## Release
 
-Push a tag `v*`; `.github/workflows/release.yml` builds both UIs as single-file executables,
-builds `VoidRemove-Setup.exe`, publishes SHA-256 sums and creates the GitHub release.
+Release by pushing a stable version tag such as `v0.1.1`, or dispatch **Release** manually
+from the default branch with a new tag. The workflow checks that the tag matches
+`VersionPrefix`, publishes the portable executables, builds `VoidRemove-Setup.exe`, computes
+SHA-256 sums, then creates the GitHub release. A manual run refuses existing tags and creates
+the new tag at the default-branch commit it builds; rerun a failed Actions run to retry an
+existing tag. If code changes after a tag is created, publish a new version instead of
+silently building newer source under the old tag. The workflow does not create a bot branch.
+
+Dependabot branches are separate: they contain proposed dependency updates for review and
+CI. Building locally, in CI, or from a release tag does not require Dependabot or create a
+branch. Non-breaking NuGet updates and all GitHub Actions updates are grouped to reduce
+bot PR noise; major NuGet updates remain separate for safer review.

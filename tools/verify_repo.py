@@ -79,13 +79,12 @@ def check_json_parses() -> None:
     bad = 0
     count = 0
     for path in iter_files(".json"):
-        if path.name in ("global.json",) or True:
-            count += 1
-            try:
-                json.loads(path.read_text(encoding="utf-8"))
-            except json.JSONDecodeError as error:
-                fail(f"invalid JSON: {path.relative_to(REPO_ROOT)}: {error}")
-                bad += 1
+        count += 1
+        try:
+            json.loads(path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as error:
+            fail(f"invalid JSON: {path.relative_to(REPO_ROOT)}: {error}")
+            bad += 1
     if bad == 0:
         ok(f"{count} JSON documents parse")
 
@@ -96,12 +95,14 @@ def check_json_parses() -> None:
 def check_central_packages() -> None:
     props = REPO_ROOT / "Directory.Packages.props"
     tree = ET.parse(props)
-    versions = {}
+    versions: dict[str, str] = {}
     for element in tree.iter():
         if element.tag.endswith("PackageVersion"):
             include = element.get("Include")
             version = element.get("Version")
             if include and version:
+                if include in versions:
+                    fail(f"Directory.Packages.props contains duplicate PackageVersion entries for {include}")
                 versions[include] = version
 
     referenced = set()
@@ -276,6 +277,55 @@ def check_assets() -> None:
         ok(f"{len(required)} brand assets present (run tools/build_icons.py to regenerate)")
 
 
+# ---------------------------------------------------------------- release package contract
+
+
+def check_release_contract() -> None:
+    workflow_path = REPO_ROOT / ".github" / "workflows" / "release.yml"
+    installer_path = REPO_ROOT / "installer" / "setup.iss"
+    if not workflow_path.exists() or not installer_path.exists():
+        fail("release workflow or Inno Setup script is missing")
+        return
+
+    previous_failures = len(FAILURES)
+    workflow = workflow_path.read_text(encoding="utf-8")
+    installer = installer_path.read_text(encoding="utf-8")
+    workflow_lower = workflow.replace("\\", "/").lower()
+
+    # Every executable the installer bundles must be produced by and attached from CI.
+    installer_sources = re.findall(r'Source:\s*"([^"]+\.exe)"', installer, re.IGNORECASE)
+    if not installer_sources:
+        fail("installer has no executable inputs")
+    components_section = re.search(
+        r"^\[Components\]\s*(.*?)(?=^\[|\Z)", installer, re.IGNORECASE | re.MULTILINE | re.DOTALL
+    )
+    if components_section and re.search(r"\bFlags\s*:\s*default\b", components_section.group(1), re.IGNORECASE):
+        fail("Inno Setup [Components] flags cannot use the unsupported 'default' flag")
+    if re.search(r"Components:\s+(?:wpf|winui)\s+not\s+(?:wpf|winui)", installer, re.IGNORECASE):
+        fail("installer component condition is missing an explicit 'and' operator")
+    for source in installer_sources:
+        normalized = source.replace("\\", "/").replace("../", "").lower()
+        if normalized not in workflow_lower:
+            fail(f"installer input is not produced/released by CI: {source}")
+
+    expected_assets = (
+        "publish/wpf/VoidRemove-Wpf-x64.exe",
+        "publish/wpf-arm64/VoidRemove-Wpf-arm64.exe",
+        "publish/winui/VoidRemove-WinUI-x64.exe",
+        "publish/installer/VoidRemove-Setup.exe",
+        "publish/SHA256SUMS.txt",
+    )
+    missing_assets = [asset for asset in expected_assets if asset.lower() not in workflow_lower]
+    if missing_assets:
+        fail(f"release workflow is missing expected release asset(s): {missing_assets}")
+
+    if "gh release create" not in workflow or "--target" not in workflow:
+        fail("release workflow must create a release targeting the commit that was built")
+
+    if len(FAILURES) == previous_failures:
+        ok("release workflow and installer agree on the published executable paths")
+
+
 # ---------------------------------------------------------------- identity mirrors
 
 
@@ -306,6 +356,7 @@ def main() -> int:
     check_no_todo_markers()
     check_braces()
     check_assets()
+    check_release_contract()
     check_sync()
 
     print()

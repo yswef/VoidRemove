@@ -173,6 +173,7 @@ public sealed partial class SettingsViewModel : ObservableObject
     public string LayoutLabel => _localization[LocalizationKeys.SettingsLayout];
     public string UninstallBehaviorLabel => _localization[LocalizationKeys.SettingsUninstallBehavior];
     public string CreateRestorePointLabel => _localization[LocalizationKeys.SettingsCreateRestorePoint];
+    public string RestorePointUnavailableHint => _localization[LocalizationKeys.SettingsRestorePointUnavailable];
     public string RemoveResidualsLabel => _localization[LocalizationKeys.SettingsRemoveResiduals];
     public string SafetyCeilingLabel => _localization[LocalizationKeys.SettingsSafetyCeiling];
     public string ConfirmBeforeUninstallLabel => _localization[LocalizationKeys.SettingsConfirmBeforeUninstall];

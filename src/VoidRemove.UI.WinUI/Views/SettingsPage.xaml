@@ -83,7 +83,7 @@
                         SelectedValue="{Binding ResidualSafetyCeiling, Mode=TwoWay}" />
             </StackPanel>
 
-            <CheckBox Content="{Binding CreateRestorePointLabel}" IsChecked="{Binding CreateRestorePointByDefault, Mode=TwoWay}" />
+            <TextBlock Text="{Binding RestorePointUnavailableHint}" Style="{StaticResource Text.Hint}" Margin="0,0,0,8" />
             <CheckBox Content="{Binding RemoveResidualsLabel}" IsChecked="{Binding RemoveResidualsByDefault, Mode=TwoWay}" />
             <CheckBox Content="{Binding ConfirmBeforeUninstallLabel}" IsChecked="{Binding ConfirmBeforeUninstall, Mode=TwoWay}" />
             <CheckBox Content="{Binding DryRunDefaultLabel}" IsChecked="{Binding DryRunByDefault, Mode=TwoWay}" />

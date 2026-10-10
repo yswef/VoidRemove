@@ -23,8 +23,8 @@
     <SatelliteResourceLanguages>en;ar</SatelliteResourceLanguages>
   </PropertyGroup>
 
-  <!-- Single file, self contained publishing. The release workflow overrides AssemblyName
-       to produce VoidRemove-WinUI-x64.exe. -->
+  <!-- Single-file, self-contained publishing. The release workflow renames the apphost
+       to include its target architecture in the downloadable asset name. -->
   <PropertyGroup Condition="'$(PublishSingleFile)' == 'true'">
     <SelfContained>true</SelfContained>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>

@@ -57,6 +57,8 @@ public sealed partial class TotalUninstallViewModel : ObservableObject
 
     public string Title => _localization[LocalizationKeys.NavUninstall];
 
+    public string RestorePointUnavailableHint => _localization[LocalizationKeys.SettingsRestorePointUnavailable];
+
     [RelayCommand]
     private async Task RefreshAsync()
     {

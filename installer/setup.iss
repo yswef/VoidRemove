@@ -12,7 +12,7 @@
   #define AppId        ReadIni(SourcePath + "\appinfo.ini", "App", "Id", "VoidRemove")
 #endif
 #ifndef AppVersion
-  #define AppVersion   ReadIni(SourcePath + "\appinfo.ini", "Version", "VersionPrefix", "0.1.0")
+  #define AppVersion   ReadIni(SourcePath + "\appinfo.ini", "Version", "VersionPrefix", "0.1.1")
 #endif
 #define RepoUrl        ReadIni(SourcePath + "\appinfo.ini", "App", "RepositoryUrl", "https://github.com/yswef/VoidRemove")
 #define IssuesUrl      ReadIni(SourcePath + "\appinfo.ini", "App", "IssuesUrl", "https://github.com/yswef/VoidRemove/issues")

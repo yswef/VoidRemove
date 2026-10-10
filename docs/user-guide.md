@@ -6,16 +6,18 @@ VoidRemove keeps every action behind a confirmation, and every risky action behi
 
 Lists everything registered in Add/Remove Programs (HKLM and HKCU, including 32-bit entries).
 Use the search box (Ctrl+F), refresh with F5, and switch sub-tabs: **All**, **Bundleware**,
-**Recently installed**, **Large**. Select a row and press **Uninstall** (or Delete) to remove it
-with a confirmation dialog that offers a restore point and residual removal.
+**Recently installed**, **Large**. Select a row and press **Uninstall** (or Delete) to start
+removal after confirmation. This quick action uses the engine defaults; it does not create a
+System Restore point.
 
 ## Total Uninstall
 
-Pick a program, choose a safety ceiling (Safe / Moderate / Advanced), optionally create a
-restore point, and press **Preview** to see exactly which leftovers would be removed.
-**Uninstall** runs the program's own uninstaller, backs up removed registry keys to `.reg`,
-and quarantines leftovers so they can be restored. **Dry run** computes without touching
-anything.
+Select a program (use **Refresh** if needed), then press **Preview** to see the count of
+leftovers matched at the current Moderate safety ceiling. **Uninstall** runs the program's own
+uninstaller, backs up removed registry keys to `.reg`, and quarantines selected leftovers.
+**Dry run** computes without touching anything. The visible restore-point checkbox is not
+connected in this build; do not rely on it. A user-facing safety-level selector is also still
+missing.
 
 ## Reset App
 
@@ -27,8 +29,8 @@ preview, **Reset** to back up to a ZIP and clear, and **Restore last backup** to
 
 **Scan now** groups findings: uninstall leftovers, redundant files, permissions, disturbing
 notifications, uninstall issues, installation files, and local malware hints. Each row shows its
-size so you can clean the biggest wins first. The VirusTotal lookup (off by default) sends only
-a SHA-256 hash.
+size so you can clean the biggest wins first. The VirusTotal setting is not connected to the
+scanner yet; the current build does not send hashes to VirusTotal.
 
 ## Install Monitor
 

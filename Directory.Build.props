@@ -16,7 +16,7 @@
 
     <!-- Release identity. Bump here; tools/sync_appinfo.py copies it out for the
          installer and the docs so a release touches exactly two places. -->
-    <VersionPrefix>0.1.0</VersionPrefix>
+    <VersionPrefix>0.1.1</VersionPrefix>
     <VersionSuffix></VersionSuffix>
 
     <Authors>VoidRemove contributors</Authors>
