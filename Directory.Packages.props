@@ -47,7 +47,7 @@
     <!-- github.com/xunit/visualstudio.xunit tag 2.8.2 -->
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.8.2" />
     <!-- github.com/microsoft/vstest tag v17.14.1 -->
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.10.1" />
     <!-- github.com/coverlet-coverage/coverlet tag v6.0.4 -->
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
   </ItemGroup>
