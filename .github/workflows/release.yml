@@ -111,13 +111,15 @@ jobs:
         run: |
           $iscc = (Get-Command iscc).Source
           Write-Host "::notice::ISCC path: $iscc"
-          # Print ISCC version
-          $versionOutput = & $iscc /? 2>&1 | Select-Object -First 5
-          Write-Host "::notice::ISCC version: $($versionOutput -join ', ')"
-          # Check setup.iss encoding
+          # Ensure setup.iss has UTF-8 BOM (git checkout on Windows can strip it)
           $bytes = [System.IO.File]::ReadAllBytes("installer\setup.iss")
           $hasBom = ($bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF)
-          Write-Host "::notice::setup.iss has BOM: $hasBom, size: $($bytes.Length) bytes"
+          if (-not $hasBom) {
+            Write-Host "::notice::Adding UTF-8 BOM to setup.iss"
+            $utf8Bom = [byte[]]@(0xEF, 0xBB, 0xBF)
+            $newBytes = $utf8Bom + $bytes
+            [System.IO.File]::WriteAllBytes("installer\setup.iss", $newBytes)
+          }
           # Run ISCC
           Write-Host "::group::ISCC output"
           $output = & $iscc installer\setup.iss 2>&1
@@ -126,7 +128,6 @@ jobs:
           Write-Host "::endgroup::"
           Write-Host "::notice::ISCC exit code: $exitCode"
           if ($exitCode -ne 0) {
-            # Post errors as annotations
             foreach ($line in $output) {
               $s = [string]$line
               if ($s -match "Error|error|Fatal") {

@@ -85,11 +85,11 @@ Name: "{group}\{#AppName}";            Filename: "{app}\VoidRemove.Wpf.exe";  Co
 Name: "{group}\{#AppName} (WinUI)";    Filename: "{app}\VoidRemove.WinUI.exe"; Components: winui
 Name: "{group}\{cm:UninstallProgram,{#AppName}}"; Filename: "{uninstallexe}"
 Name: "{commondesktop}\{#AppName}";    Filename: "{app}\VoidRemove.Wpf.exe";  Components: wpf;   Tasks: desktopicon
-Name: "{commondesktop}\{#AppName}";    Filename: "{app}\VoidRemove.WinUI.exe"; Components: winui not wpf; Tasks: desktopicon
+Name: "{commondesktop}\{#AppName}";    Filename: "{app}\VoidRemove.WinUI.exe"; Components: winui and not wpf; Tasks: desktopicon
 
 [Run]
 Filename: "{app}\VoidRemove.Wpf.exe";   Description: "{cm:LaunchNow}"; Flags: nowait postinstall skipifsilent runascurrentuser; Components: wpf
-Filename: "{app}\VoidRemove.WinUI.exe"; Description: "{cm:LaunchNow}"; Flags: nowait postinstall skipifsilent runascurrentuser; Components: winui not wpf
+Filename: "{app}\VoidRemove.WinUI.exe"; Description: "{cm:LaunchNow}"; Flags: nowait postinstall skipifsilent runascurrentuser; Components: winui and not wpf
 
 [UninstallDelete]
 Type: filesandordirs; Name: "{app}\data"
