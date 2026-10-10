@@ -116,6 +116,9 @@ public partial class MainWindow : Window
             case VoidRemove.Core.ViewModels.ProgramsViewModel programs:
                 programs.RefreshCommand.Execute(null);
                 break;
+            case VoidRemove.Core.ViewModels.TotalUninstallViewModel uninstall:
+                uninstall.RefreshCommand.Execute(null);
+                break;
             case VoidRemove.Core.ViewModels.HealthViewModel health:
                 health.ScanCommand.Execute(null);
                 break;

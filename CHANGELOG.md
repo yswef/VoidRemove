@@ -43,4 +43,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Phase 9** — MkDocs Material site (English + Arabic) with per-section guides, FAQ and a
   developer page.
 
+### Fixed
+- Fixed the Inno Setup compile blocker by removing the unsupported `default` component flag
+  and correcting component expressions; the release workflow validates every expected
+  executable before packaging and uploads build outputs and ISCC logs for diagnosis.
+- Added a Windows CI packaging smoke test so the single-file publish and installer compile
+  are exercised on pull requests before a version tag is published.
+- WPF Total Uninstall now loads its program list on first open and supports refresh with its
+  button or F5. Nonfunctional restore-point controls were replaced with a localized warning.
+- Removed nullable service-provider warnings from the WPF composition root and duplicate /
+  unused central package version entries.
+- Expanded repository checks to verify release asset paths against the installer script.
+
+### Changed
+- Grouped compatible Dependabot updates to reduce bot pull-request branches.
+- Updated English/Arabic docs to distinguish implemented features from online integrations
+  and System Restore-point support that are not wired up yet.
+
 [Unreleased]: https://github.com/yswef/VoidRemove/commits/main

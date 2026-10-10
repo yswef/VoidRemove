@@ -7,14 +7,16 @@ recommendations derived from your own system.
 
 ## Does it work offline?
 
-Fully. The only optional network features are an update check and a VirusTotal hash lookup,
-both disabled by default.
+Yes. The current app does not send telemetry. Its update-check and VirusTotal settings are not
+yet connected to online services, so enabling those flags currently sends no update request or
+file hash. External links open only when you explicitly choose them.
 
 ## Is it safe? Will it delete something important?
 
-Nothing is deleted without your confirmation. Risky operations create a backup or restore
-point first, leftovers go to a restorable quarantine, and a permanent exclusion list plus a
-built-in floor of system locations are never touched. Use **Dry run** to preview any operation.
+Nothing is deleted without your confirmation. Registry keys are exported and file leftovers
+are quarantined where supported. The System Restore-point service is not connected in the
+current build, so do not rely on the restore-point option; the permanent exclusion list and
+built-in system-path protections still apply. Use **Dry run** to preview operations.
 
 ## What do the safety levels mean?
 

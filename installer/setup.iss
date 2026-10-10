@@ -12,7 +12,7 @@
   #define AppId        ReadIni(SourcePath + "\appinfo.ini", "App", "Id", "VoidRemove")
 #endif
 #ifndef AppVersion
-  #define AppVersion   ReadIni(SourcePath + "\appinfo.ini", "Version", "VersionPrefix", "0.1.0")
+  #define AppVersion   ReadIni(SourcePath + "\appinfo.ini", "Version", "VersionPrefix", "0.1.1")
 #endif
 #define RepoUrl        ReadIni(SourcePath + "\appinfo.ini", "App", "RepositoryUrl", "https://github.com/yswef/VoidRemove")
 #define IssuesUrl      ReadIni(SourcePath + "\appinfo.ini", "App", "IssuesUrl", "https://github.com/yswef/VoidRemove/issues")
@@ -67,7 +67,7 @@ Name: "full";  Description: "Full installation"
 Name: "wpfonly"; Description: "WPF only"
 
 [Components]
-Name: "wpf";    Description: "{cm:WpfTitle}";  Types: full wpfonly; Flags: default
+Name: "wpf";    Description: "{cm:WpfTitle}";  Types: full wpfonly
 Name: "winui";  Description: "{cm:WinUITitle}"; Types: full
 
 [Tasks]
@@ -85,11 +85,11 @@ Name: "{group}\{#AppName}";            Filename: "{app}\VoidRemove.Wpf.exe";  Co
 Name: "{group}\{#AppName} (WinUI)";    Filename: "{app}\VoidRemove.WinUI.exe"; Components: winui
 Name: "{group}\{cm:UninstallProgram,{#AppName}}"; Filename: "{uninstallexe}"
 Name: "{autodesktop}\{#AppName}";      Filename: "{app}\VoidRemove.Wpf.exe";  Components: wpf;   Tasks: desktopicon
-Name: "{autodesktop}\{#AppName}";      Filename: "{app}\VoidRemove.WinUI.exe"; Components: winui not wpf; Tasks: desktopicon
+Name: "{autodesktop}\{#AppName}";      Filename: "{app}\VoidRemove.WinUI.exe"; Components: winui and not wpf; Tasks: desktopicon
 
 [Run]
 Filename: "{app}\VoidRemove.Wpf.exe";   Description: "{cm:LaunchNow}"; Flags: nowait postinstall skipifsilent runascurrentuser; Components: wpf
-Filename: "{app}\VoidRemove.WinUI.exe"; Description: "{cm:LaunchNow}"; Flags: nowait postinstall skipifsilent runascurrentuser; Components: winui not wpf
+Filename: "{app}\VoidRemove.WinUI.exe"; Description: "{cm:LaunchNow}"; Flags: nowait postinstall skipifsilent runascurrentuser; Components: winui and not wpf
 
 [UninstallDelete]
 Type: filesandordirs; Name: "{app}\data"

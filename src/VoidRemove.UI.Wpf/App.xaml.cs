@@ -38,6 +38,9 @@ public partial class App : Application
     private SplashWindow? _splash;
     private TrayIconService? _tray;
 
+    private ServiceProvider Provider => _provider ??
+        throw new InvalidOperationException("The application services have not been initialized.");
+
     /// <inheritdoc />
     protected override void OnStartup(StartupEventArgs e)
     {
@@ -91,28 +94,29 @@ public partial class App : Application
 
         services.AddSingleton<MainWindow>();
 
-        _provider = services.BuildServiceProvider(new ServiceProviderOptions { ValidateScopes = true });
-        _logger = _provider.GetRequiredService<ILoggerFactory>().CreateLogger<App>();
+        ServiceProvider provider = services.BuildServiceProvider(new ServiceProviderOptions { ValidateScopes = true });
+        _provider = provider;
+        _logger = provider.GetRequiredService<ILoggerFactory>().CreateLogger<App>();
         _logger.LogInformation("{Product} {Version} starting.", AppInfo.Name, AppInfo.Version);
 
         // Settings are read before anything is drawn so the first frame already has the
         // right language and theme. The file is small; blocking here costs milliseconds.
-        ISettingsService settingsService = _provider.GetRequiredService<ISettingsService>();
+        ISettingsService settingsService = provider.GetRequiredService<ISettingsService>();
         AppSettings settings = settingsService.LoadAsync().GetAwaiter().GetResult();
 
-        ILocalizationService localization = _provider.GetRequiredService<ILocalizationService>();
+        ILocalizationService localization = provider.GetRequiredService<ILocalizationService>();
         localization.SetLanguage(settings.Language);
 
-        ThemeManager themes = _provider.GetRequiredService<ThemeManager>();
+        ThemeManager themes = provider.GetRequiredService<ThemeManager>();
         themes.Apply(settings.Theme, settings.AccentColor);
         WpfThemeApplier.Apply(themes.Current, Resources);
 
-        RegisterSections(_provider.GetRequiredService<ShellViewModel>());
+        RegisterSections(provider.GetRequiredService<ShellViewModel>());
 
         _splash = new SplashWindow(localization);
         _splash.Show();
 
-        MainWindow mainWindow = _provider.GetRequiredService<MainWindow>();
+        MainWindow mainWindow = provider.GetRequiredService<MainWindow>();
         MainWindow = mainWindow;
         mainWindow.Show();
 
@@ -176,7 +180,7 @@ public partial class App : Application
     /// </summary>
     private void RegisterSections(ShellViewModel shell)
     {
-        ServiceProvider provider = _provider!;
+        ServiceProvider provider = Provider;
 
         shell.RegisterSection(LocalizationKeys.NavGroupLibrary, LocalizationKeys.NavGroupLibrary, "programs", LocalizationKeys.NavPrograms, IconGeometry.Programs, provider.GetRequiredService<ProgramsViewModel>());
         shell.RegisterSection(LocalizationKeys.NavGroupLibrary, LocalizationKeys.NavGroupLibrary, "uninstall", LocalizationKeys.NavUninstall, IconGeometry.Delete, provider.GetRequiredService<TotalUninstallViewModel>());
@@ -191,8 +195,9 @@ public partial class App : Application
 
     private void StartTray(MainWindow mainWindow)
     {
-        ILocalizationService localization = _provider!.GetRequiredService<ILocalizationService>();
-        ISettingsService settingsService = _provider.GetRequiredService<ISettingsService>();
+        ServiceProvider provider = Provider;
+        ILocalizationService localization = provider.GetRequiredService<ILocalizationService>();
+        ISettingsService settingsService = provider.GetRequiredService<ISettingsService>();
 
         _tray = new TrayIconService();
         _tray.Show(
@@ -215,8 +220,9 @@ public partial class App : Application
 
     private void ApplyContextMenuFlags(bool enabled)
     {
-        ExplorerContextMenuService contextMenu = _provider!.GetRequiredService<ExplorerContextMenuService>();
-        ILocalizationService localization = _provider.GetRequiredService<ILocalizationService>();
+        ServiceProvider provider = Provider;
+        ExplorerContextMenuService contextMenu = provider.GetRequiredService<ExplorerContextMenuService>();
+        ILocalizationService localization = provider.GetRequiredService<ILocalizationService>();
 
         if (enabled)
         {

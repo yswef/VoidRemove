@@ -106,6 +106,7 @@ public static class LocalizationKeys
     public const string SettingsLayout = "settings.layout";
     public const string SettingsUninstallBehavior = "settings.uninstallBehavior";
     public const string SettingsCreateRestorePoint = "settings.createRestorePoint";
+    public const string SettingsRestorePointUnavailable = "settings.restorePointUnavailable";
     public const string SettingsRemoveResiduals = "settings.removeResiduals";
     public const string SettingsSafetyCeiling = "settings.safetyCeiling";
     public const string SettingsConfirmBeforeUninstall = "settings.confirmBeforeUninstall";

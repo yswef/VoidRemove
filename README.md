@@ -32,10 +32,10 @@ folders, registry keys, services, scheduled tasks, firewall rules, COM/shell
 registrations — classifies every leftover by how safe it is to delete, backs it up,
 and lets you decide.
 
-Everything happens on your machine. There is no telemetry, no advertising, and no
-account. The only two features that ever touch the network — checking for a new
-VoidRemove release and querying VirusTotal — are **off by default** and stay off
-until you switch them on in Settings.
+The current app has no telemetry, advertising, or account requirement. Note that the
+update-check and VirusTotal settings are not wired to online services yet; turning them on
+does not currently send update requests or file hashes. External links open only when you
+explicitly choose one in the app.
 
 ### Sections
 
@@ -58,6 +58,7 @@ until you switch them on in Settings.
 4. Leftovers are graded **Safe / Moderate / Advanced** — advanced items are never pre-selected.
 5. A permanent, hard-coded protection list refuses to touch critical system folders, critical registry hives and VoidRemove's own data.
 6. A **Dry run** mode previews any operation without changing the system.
+7. System Restore-point creation is not connected in the current build; do not rely on that checkbox.
 
 ### Install
 
@@ -68,8 +69,8 @@ administrator rights — it removes machine-wide registrations.
 
 ### License
 
-MIT — see [LICENSE](LICENSE). Contributions welcome: [CONTRIBUTING](docs/CONTRIBUTING.md) ·
-[Code of Conduct](docs/CODE_OF_CONDUCT.md) · [Security policy](docs/SECURITY.md).
+MIT — see [LICENSE](LICENSE). Contributions welcome: [CONTRIBUTING](CONTRIBUTING.md) ·
+[Code of Conduct](CODE_OF_CONDUCT.md) · [Security policy](SECURITY.md).
 
 ---
 
@@ -81,9 +82,9 @@ MIT — see [LICENSE](LICENSE). Contributions welcome: [CONTRIBUTING](docs/CONTR
 الحماية وتسجيلات COM — ويصنّف كل بقية حسب درجة أمان حذفها، ويأخذ نسخة احتياطية،
 ثم يترك القرار لك.
 
-كل شيء يحدث على جهازك: لا تتبّع، ولا إعلانات، ولا حسابات. الميزتان الوحيدتان اللتان
-تتصلان بالإنترنت — فحص تحديثات التطبيق نفسه وفحص VirusTotal — **معطّلتان افتراضياً**
-ولا تعملان إلا بعد تفعيلهما من الإعدادات.
+لا يحتوي التطبيق الحالي على تتبّع أو إعلانات ولا يتطلب حسابًا. تنبيه: خياري فحص التحديثات
+وVirusTotal غير موصولين بالخدمات الشبكية بعد؛ تفعيلهما لا يرسل حاليًا طلبات تحديث أو تجزئات
+ملفات. لا تُفتح الروابط الخارجية إلا إذا اخترتها بنفسك داخل التطبيق.
 
 ### الأقسام
 
@@ -106,6 +107,7 @@ MIT — see [LICENSE](LICENSE). Contributions welcome: [CONTRIBUTING](docs/CONTR
 4. تُصنَّف البقايا إلى **آمن / متوسط / متقدم**، والعناصر المتقدمة لا تُحدَّد افتراضياً أبداً.
 5. قائمة حماية ثابتة ترفض لمس مجلدات النظام الحرجة وأقسام الريجستري الحساسة وبيانات VoidRemove نفسه.
 6. وضع **معاينة (Dry run)** يعرض أي عملية دون تعديل النظام.
+7. خدمة نقاط استعادة النظام غير موصولة في النسخة الحالية؛ فلا تعتمد على خيارها.
 
 ### التثبيت
 
@@ -197,7 +199,9 @@ python tools/build_icons.py             # rewrites logo.svg, assets/png/*.png, a
 
 ### Status · الحالة
 
-The build is delivered in nine phases. Phase 1 (solution skeleton, identity,
-settings, logging, theming, localization, logo) is complete; the uninstall engine,
-Install Monitor, Software Health, the full UIs, the installer and the docs follow in
-the next phases. See [CHANGELOG.md](CHANGELOG.md).
+The repository contains the nine implementation milestones recorded in
+[CHANGELOG.md](CHANGELOG.md). A successful source build is not the same as a published
+release: downloadable executables appear only after the tagged Release workflow finishes
+successfully. See [Releases](https://github.com/yswef/VoidRemove/releases) for what is
+actually published; the feature list describes the intended/current code, not a guarantee
+that every Windows-only operation has been manually validated on every Windows version.

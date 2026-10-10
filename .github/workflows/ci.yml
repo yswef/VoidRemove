@@ -29,6 +29,70 @@ jobs:
       - name: Test
         run: dotnet test tests/VoidRemove.Core.Tests -c Release --no-build --logger "trx;LogFileName=tests.trx"
 
+      # Keep the release-only packaging path exercised by PR CI, not just when a tag is pushed.
+      - name: Publish WPF x64 (single file)
+        run: >
+          dotnet publish src/VoidRemove.UI.Wpf -c Release -r win-x64 --self-contained true --no-restore
+          -p:PublishSingleFile=true -o publish/wpf
+
+      - name: Rename WPF x64 smoke-test output
+        shell: pwsh
+        run: Move-Item publish/wpf/VoidRemove.Wpf.exe publish/wpf/VoidRemove-Wpf-x64.exe
+
+      - name: Publish WPF ARM64 (single file)
+        run: >
+          dotnet publish src/VoidRemove.UI.Wpf -c Release -r win-arm64 --self-contained true --no-restore
+          -p:PublishSingleFile=true -o publish/wpf-arm64
+
+      - name: Rename WPF ARM64 smoke-test output
+        shell: pwsh
+        run: Move-Item publish/wpf-arm64/VoidRemove.Wpf.exe publish/wpf-arm64/VoidRemove-Wpf-arm64.exe
+
+      - name: Publish WinUI x64 (single file)
+        run: >
+          dotnet publish src/VoidRemove.UI.WinUI -c Release -r win-x64 --self-contained true --no-restore
+          -p:PublishSingleFile=true -o publish/winui
+
+      - name: Rename WinUI smoke-test output
+        shell: pwsh
+        run: Move-Item publish/winui/VoidRemove.WinUI.exe publish/winui/VoidRemove-WinUI-x64.exe
+
+      - name: Prepare Inno Setup for packaging smoke test
+        shell: pwsh
+        run: |
+          $candidates = @(
+            'C:\Program Files (x86)\Inno Setup 6',
+            'C:\Program Files\Inno Setup 6'
+          )
+          $found = $null
+          foreach ($directory in $candidates) {
+            if (Test-Path (Join-Path $directory 'ISCC.exe')) {
+              $found = $directory
+              break
+            }
+          }
+          if (-not $found) {
+            choco install innosetup -y --no-progress
+            if ($LASTEXITCODE -ne 0) { throw "Chocolatey failed to install Inno Setup (exit $LASTEXITCODE)." }
+            foreach ($directory in $candidates) {
+              if (Test-Path (Join-Path $directory 'ISCC.exe')) {
+                $found = $directory
+                break
+              }
+            }
+          }
+          if (-not $found) { throw 'Could not locate Inno Setup ISCC.exe.' }
+          "ISCC_PATH=$(Join-Path $found 'ISCC.exe')" >> $env:GITHUB_ENV
+
+      - name: Compile installer (packaging smoke test)
+        shell: pwsh
+        run: |
+          & $env:ISCC_PATH installer\setup.iss
+          if ($LASTEXITCODE -ne 0) { throw "Inno Setup failed with exit code $LASTEXITCODE." }
+          if (-not (Test-Path 'publish/installer/VoidRemove-Setup.exe')) {
+            throw 'Inno Setup did not create publish/installer/VoidRemove-Setup.exe.'
+          }
+
       - name: Surface failing tests as annotations
         if: always()
         shell: pwsh
