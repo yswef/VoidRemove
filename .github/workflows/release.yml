@@ -109,16 +109,18 @@ jobs:
 
       - name: Build installer
         run: |
-          echo "=== Running ISCC ==="
-          echo "Working directory: $(pwd)"
-          Get-Command iscc -ErrorAction SilentlyContinue | Format-List Name,Source
-          echo ""
-          echo "=== ISCC output ==="
-          iscc installer\setup.iss 2>&1 | ForEach-Object { Write-Output $_ }
+          echo "::group::ISCC Build Output"
+          echo "Working directory: $(Get-Location)"
+          $iscc = (Get-Command iscc).Source
+          echo "ISCC: $iscc"
+          & $iscc installer\setup.iss 2>&1 | ForEach-Object { Write-Host $_ }
           $exitCode = $LASTEXITCODE
-          echo ""
-          echo "ISCC exit code: $exitCode"
-          exit $exitCode
+          echo "Exit code: $exitCode"
+          echo "::endgroup::"
+          if ($exitCode -ne 0) {
+            Write-Host "::error::ISCC failed with exit code $exitCode"
+            exit $exitCode
+          }
 
       - name: Compute SHA-256 checksums
         shell: pwsh
