@@ -54,7 +54,6 @@ jobs:
         shell: pwsh
         run: |
           # windows-latest ships with Inno Setup 6 pre-installed.
-          # Prefer the pre-installed copy; fall back to choco only if needed.
           $candidates = @(
             "C:\Program Files (x86)\Inno Setup 6",
             "C:\Program Files\Inno Setup 6"
@@ -67,7 +66,6 @@ jobs:
             }
           }
           if (-not $found) {
-            Write-Output "Inno Setup not pre-installed, installing via choco..."
             choco install innosetup -y --no-progress
             foreach ($dir in $candidates) {
               if (Test-Path "$dir\ISCC.exe") {
@@ -80,62 +78,20 @@ jobs:
             Write-Error "Could not locate ISCC.exe after install"
             exit 1
           }
-          Write-Output "Found Inno Setup at: $found"
           echo $found >> $env:GITHUB_PATH
 
-      - name: Verify published artifacts
+      - name: Build installer
         shell: pwsh
         run: |
-          Write-Output "=== Checking expected files before Inno Setup ==="
-          $expected = @(
-            "publish\wpf\VoidRemove-Wpf-x64.exe",
-            "publish\winui\VoidRemove-WinUI-x64.exe",
-            "data\bundleware.json",
-            "assets\icon.ico",
-            "assets\setup-wizard.bmp",
-            "assets\setup-header.bmp",
-            "LICENSE"
-          )
-          foreach ($f in $expected) {
-            if (Test-Path $f) {
-              $size = (Get-Item $f).Length
-              Write-Output "  OK  $f ($size bytes)"
-            } else {
-              Write-Output "  MISSING  $f"
-            }
-          }
-          Write-Output "=== iscc version ==="
-          iscc /? 2>&1 | Select-Object -First 3
-
-      - name: Build installer
-        run: |
           $iscc = (Get-Command iscc).Source
-          Write-Host "::notice::ISCC path: $iscc"
           # Ensure setup.iss has UTF-8 BOM (git checkout on Windows can strip it)
           $bytes = [System.IO.File]::ReadAllBytes("installer\setup.iss")
           $hasBom = ($bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF)
           if (-not $hasBom) {
-            Write-Host "::notice::Adding UTF-8 BOM to setup.iss"
             $utf8Bom = [byte[]]@(0xEF, 0xBB, 0xBF)
-            $newBytes = $utf8Bom + $bytes
-            [System.IO.File]::WriteAllBytes("installer\setup.iss", $newBytes)
+            [System.IO.File]::WriteAllBytes("installer\setup.iss", [byte[]]($utf8Bom + $bytes))
           }
-          # Run ISCC
-          Write-Host "::group::ISCC output"
-          $output = & $iscc installer\setup.iss 2>&1
-          $exitCode = $LASTEXITCODE
-          foreach ($line in $output) { Write-Host $line }
-          Write-Host "::endgroup::"
-          Write-Host "::notice::ISCC exit code: $exitCode"
-          if ($exitCode -ne 0) {
-            foreach ($line in $output) {
-              $s = [string]$line
-              if ($s -match "Error|error|Fatal") {
-                Write-Host "::error::$s"
-              }
-            }
-            exit $exitCode
-          }
+          & $iscc installer\setup.iss
 
       - name: Compute SHA-256 checksums
         shell: pwsh
