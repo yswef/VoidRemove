@@ -112,28 +112,31 @@ jobs:
         run: |
           Write-Output "=== Running ISCC ==="
           Write-Output "Working directory: $(Get-Location)"
-          Write-Output "ISCC path: $(Get-Command iscc -ErrorAction SilentlyContinue).Source"
+          $iscc = (Get-Command iscc -ErrorAction Stop).Source
+          Write-Output "ISCC path: $iscc"
           Write-Output "ISS file exists: $(Test-Path installer\setup.iss)"
           Write-Output ""
-          Write-Output "=== ISS file content (first 30 lines) ==="
-          Get-Content installer\setup.iss -Head 30
-          Write-Output ""
-          Write-Output "=== Appinfo.ini content ==="
-          Get-Content installer\appinfo.ini
-          Write-Output ""
           Write-Output "=== ISCC output ==="
-          $proc = Start-Process -FilePath "iscc" -ArgumentList "installer\setup.iss" -NoNewWindow -Wait -PassThru -RedirectStandardOutput "iscc_stdout.txt" -RedirectStandardError "iscc_stderr.txt"
+          $proc = Start-Process -FilePath $iscc -ArgumentList "installer\setup.iss" -NoNewWindow -Wait -PassThru -RedirectStandardOutput "iscc_stdout.txt" -RedirectStandardError "iscc_stderr.txt"
           Write-Output "Exit code: $($proc.ExitCode)"
           Write-Output ""
           Write-Output "=== ISCC stdout ==="
-          Get-Content iscc_stdout.txt
+          Get-Content iscc_stdout.txt -ErrorAction SilentlyContinue
           Write-Output ""
           Write-Output "=== ISCC stderr ==="
-          Get-Content iscc_stderr.txt
+          Get-Content iscc_stderr.txt -ErrorAction SilentlyContinue
           if ($proc.ExitCode -ne 0) {
-            Write-Error "ISCC failed with exit code $($proc.ExitCode)"
             exit $proc.ExitCode
           }
+
+      - name: Upload ISCC logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: iscc-logs
+          path: |
+            iscc_stdout.txt
+            iscc_stderr.txt
 
       - name: Compute SHA-256 checksums
         shell: pwsh
