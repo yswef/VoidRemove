@@ -49,7 +49,7 @@
     <!-- github.com/microsoft/vstest tag v17.14.1 -->
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
     <!-- github.com/coverlet-coverage/coverlet tag v6.0.4 -->
-    <PackageVersion Include="coverlet.collector" Version="6.0.4" />
+    <PackageVersion Include="coverlet.collector" Version="10.1.0" />
   </ItemGroup>
 
 </Project>
