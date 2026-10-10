@@ -50,7 +50,6 @@ CreateUninstallRegKey=yes
 
 [Languages]
 Name: "en";  MessagesFile: "compiler:Default.isl"
-Name: "ar";  MessagesFile: "compiler:Languages\Arabic.isl"
 
 [CustomMessages]
 en.WpfTitle=Classic interface (WPF) - recommended
