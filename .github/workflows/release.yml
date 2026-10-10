@@ -20,20 +20,35 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
+      - name: Restore
+        run: dotnet restore VoidRemove.sln
+
       - name: Publish WPF (x64, single file)
         run: >
           dotnet publish src/VoidRemove.UI.Wpf -c Release -r win-x64 --self-contained true
-          -p:PublishSingleFile=true -p:AssemblyName=VoidRemove-Wpf-x64 -o publish/wpf
+          -p:PublishSingleFile=true -o publish/wpf
+
+      - name: Rename WPF x64 artifact
+        shell: pwsh
+        run: Rename-Item publish/wpf/VoidRemove.Wpf.exe VoidRemove-Wpf-x64.exe
 
       - name: Publish WPF (arm64, single file)
         run: >
           dotnet publish src/VoidRemove.UI.Wpf -c Release -r win-arm64 --self-contained true
-          -p:PublishSingleFile=true -p:AssemblyName=VoidRemove-Wpf-arm64 -o publish/wpf-arm64
+          -p:PublishSingleFile=true -o publish/wpf-arm64
+
+      - name: Rename WPF arm64 artifact
+        shell: pwsh
+        run: Rename-Item publish/wpf-arm64/VoidRemove.Wpf.exe VoidRemove-Wpf-arm64.exe
 
       - name: Publish WinUI (x64, single file)
         run: >
           dotnet publish src/VoidRemove.UI.WinUI -c Release -r win-x64 --self-contained true
-          -p:PublishSingleFile=true -p:AssemblyName=VoidRemove-WinUI-x64 -o publish/winui
+          -p:PublishSingleFile=true -o publish/winui
+
+      - name: Rename WinUI x64 artifact
+        shell: pwsh
+        run: Rename-Item publish/winui/VoidRemove.WinUI.exe VoidRemove-WinUI-x64.exe
 
       - name: Install Inno Setup
         run: choco install innosetup -y --no-progress
