@@ -108,19 +108,17 @@ jobs:
           iscc /? 2>&1 | Select-Object -First 3
 
       - name: Build installer
-        shell: cmd
         run: |
-          echo === Running ISCC ===
-          echo Working directory: %CD%
-          where iscc
-          echo.
-          echo === ISCC output ===
-          iscc installer\setup.iss
-          echo ISCC exit code: %ERRORLEVEL%
-          if %ERRORLEVEL% neq 0 (
-            echo ISCC FAILED
-            exit /b %ERRORLEVEL%
-          )
+          echo "=== Running ISCC ==="
+          echo "Working directory: $(pwd)"
+          Get-Command iscc -ErrorAction SilentlyContinue | Format-List Name,Source
+          echo ""
+          echo "=== ISCC output ==="
+          iscc installer\setup.iss 2>&1 | ForEach-Object { Write-Output $_ }
+          $exitCode = $LASTEXITCODE
+          echo ""
+          echo "ISCC exit code: $exitCode"
+          exit $exitCode
 
       - name: Compute SHA-256 checksums
         shell: pwsh
