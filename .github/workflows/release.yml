@@ -108,7 +108,32 @@ jobs:
           iscc /? 2>&1 | Select-Object -First 3
 
       - name: Build installer
-        run: iscc installer\setup.iss
+        shell: pwsh
+        run: |
+          Write-Output "=== Running ISCC ==="
+          Write-Output "Working directory: $(Get-Location)"
+          Write-Output "ISCC path: $(Get-Command iscc -ErrorAction SilentlyContinue).Source"
+          Write-Output "ISS file exists: $(Test-Path installer\setup.iss)"
+          Write-Output ""
+          Write-Output "=== ISS file content (first 30 lines) ==="
+          Get-Content installer\setup.iss -Head 30
+          Write-Output ""
+          Write-Output "=== Appinfo.ini content ==="
+          Get-Content installer\appinfo.ini
+          Write-Output ""
+          Write-Output "=== ISCC output ==="
+          $proc = Start-Process -FilePath "iscc" -ArgumentList "installer\setup.iss" -NoNewWindow -Wait -PassThru -RedirectStandardOutput "iscc_stdout.txt" -RedirectStandardError "iscc_stderr.txt"
+          Write-Output "Exit code: $($proc.ExitCode)"
+          Write-Output ""
+          Write-Output "=== ISCC stdout ==="
+          Get-Content iscc_stdout.txt
+          Write-Output ""
+          Write-Output "=== ISCC stderr ==="
+          Get-Content iscc_stderr.txt
+          if ($proc.ExitCode -ne 0) {
+            Write-Error "ISCC failed with exit code $($proc.ExitCode)"
+            exit $proc.ExitCode
+          }
 
       - name: Compute SHA-256 checksums
         shell: pwsh
