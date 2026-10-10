@@ -109,16 +109,30 @@ jobs:
 
       - name: Build installer
         run: |
-          echo "::group::ISCC Build Output"
-          echo "Working directory: $(Get-Location)"
           $iscc = (Get-Command iscc).Source
-          echo "ISCC: $iscc"
-          & $iscc installer\setup.iss 2>&1 | ForEach-Object { Write-Host $_ }
+          Write-Host "::notice::ISCC path: $iscc"
+          # Print ISCC version
+          $versionOutput = & $iscc /? 2>&1 | Select-Object -First 5
+          Write-Host "::notice::ISCC version: $($versionOutput -join ', ')"
+          # Check setup.iss encoding
+          $bytes = [System.IO.File]::ReadAllBytes("installer\setup.iss")
+          $hasBom = ($bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF)
+          Write-Host "::notice::setup.iss has BOM: $hasBom, size: $($bytes.Length) bytes"
+          # Run ISCC
+          Write-Host "::group::ISCC output"
+          $output = & $iscc installer\setup.iss 2>&1
           $exitCode = $LASTEXITCODE
-          echo "Exit code: $exitCode"
-          echo "::endgroup::"
+          foreach ($line in $output) { Write-Host $line }
+          Write-Host "::endgroup::"
+          Write-Host "::notice::ISCC exit code: $exitCode"
           if ($exitCode -ne 0) {
-            Write-Host "::error::ISCC failed with exit code $exitCode"
+            # Post errors as annotations
+            foreach ($line in $output) {
+              $s = [string]$line
+              if ($s -match "Error|error|Fatal") {
+                Write-Host "::error::$s"
+              }
+            }
             exit $exitCode
           }
 
