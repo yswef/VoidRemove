@@ -18,7 +18,7 @@
 #define IssuesUrl      ReadIni(SourcePath + "\appinfo.ini", "App", "IssuesUrl", "https://github.com/yswef/VoidRemove/issues")
 
 [Setup]
-AppId={{#AppId}
+AppId={#AppId}
 AppName={#AppName}
 AppVersion={#AppVersion}
 AppVerName={#AppName} {#AppVersion}
