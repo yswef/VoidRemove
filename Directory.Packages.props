@@ -21,7 +21,7 @@
     <!-- github.com/serilog/serilog tag v4.2.0 -->
     <PackageVersion Include="Serilog" Version="4.2.0" />
     <!-- github.com/serilog/serilog-extensions-logging tag v8.0.0 -->
-    <PackageVersion Include="Serilog.Extensions.Logging" Version="8.0.0" />
+    <PackageVersion Include="Serilog.Extensions.Logging" Version="10.0.0" />
     <!-- github.com/serilog/serilog-sinks-file tag v6.0.0 -->
     <PackageVersion Include="Serilog.Sinks.File" Version="6.0.0" />
   </ItemGroup>
