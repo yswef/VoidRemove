@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <!-- Registry, Services and WMI types come from the net8.0-windows shared framework. -->
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
     <PackageReference Include="CommunityToolkit.Mvvm" />

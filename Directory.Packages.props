@@ -15,11 +15,11 @@
     <!-- github.com/CommunityToolkit/dotnet tag v8.4.2 -->
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.2" />
     <!-- .NET 8 release train -->
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.3" />
     <!-- github.com/serilog/serilog tag v4.2.0 -->
-    <PackageVersion Include="Serilog" Version="4.2.0" />
+    <PackageVersion Include="Serilog" Version="4.4.0" />
     <!-- github.com/serilog/serilog-extensions-logging tag v8.0.0 -->
     <PackageVersion Include="Serilog.Extensions.Logging" Version="8.0.0" />
     <!-- github.com/serilog/serilog-sinks-file tag v6.0.0 -->
@@ -32,8 +32,8 @@
     <!-- WMI for the Install Monitor (phase 3). Pinned now so the version is reviewed once. -->
     <PackageVersion Include="System.Management" Version="8.0.0" />
     <!-- WinUI 3 (Windows App SDK 1.7.9 release notes) -->
-    <PackageVersion Include="Microsoft.WindowsAppSDK" Version="1.7.260224002" />
-    <PackageVersion Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.4188" />
+    <PackageVersion Include="Microsoft.WindowsAppSDK" Version="1.8.260921001" />
+    <PackageVersion Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2957" />
   </ItemGroup>
 
   <ItemGroup Label="Tests">
@@ -42,7 +42,7 @@
     <!-- github.com/xunit/visualstudio.xunit tag 2.8.2 -->
     <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.1" />
     <!-- github.com/microsoft/vstest tag v17.14.1 -->
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.10.1" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.12.0" />
     <!-- github.com/coverlet-coverage/coverlet tag v6.0.4 -->
     <PackageVersion Include="coverlet.collector" Version="10.1.0" />
   </ItemGroup>
