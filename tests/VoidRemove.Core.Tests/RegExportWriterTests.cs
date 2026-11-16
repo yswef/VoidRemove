@@ -52,6 +52,21 @@ public sealed class RegExportWriterTests
         Assert.Contains("\"Dir\"=hex(2):41,00,00,00", output, StringComparison.Ordinal);
     }
 
+    [Theory]
+    [InlineData(-1, "ffffffff")]
+    [InlineData(int.MinValue, "80000000")]
+    public void DwordValuesWithHighBitSetRemainEightHexDigits(int value, string expected)
+    {
+        RegKeySnapshot key = new(
+            @"HKEY_CURRENT_USER\Software\X",
+            new List<RegValueSnapshot> { new("Value", RegValueKind.Dword, value) },
+            Array.Empty<RegKeySnapshot>());
+
+        string output = RegExportWriter.Write(key);
+
+        Assert.Contains($"\"Value\"=dword:{expected}", output, StringComparison.Ordinal);
+    }
+
     [Fact]
     public void MultipleKeysProduceMultipleSections()
     {

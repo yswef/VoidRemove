@@ -220,7 +220,7 @@ public sealed class QuarantineService
 
     private async Task<QuarantineManifest?> ReadManifestAsync(string manifestId, CancellationToken cancellationToken)
     {
-        string manifestPath = Path.Combine(_paths.Quarantine, manifestId, QuarantineManifest.ManifestFileName);
+        string manifestPath = Path.Combine(GetSessionRoot(manifestId), QuarantineManifest.ManifestFileName);
         if (!File.Exists(manifestPath))
         {
             return null;
@@ -239,11 +239,35 @@ public sealed class QuarantineService
 
     private void DeleteSession(string manifestId)
     {
-        string sessionRoot = Path.Combine(_paths.Quarantine, manifestId);
+        string sessionRoot = GetSessionRoot(manifestId);
         if (Directory.Exists(sessionRoot))
         {
             Directory.Delete(sessionRoot, recursive: true);
         }
+    }
+
+    private string GetSessionRoot(string manifestId)
+    {
+        if (string.IsNullOrWhiteSpace(manifestId) ||
+            Path.IsPathRooted(manifestId) ||
+            !string.Equals(Path.GetFileName(manifestId), manifestId, StringComparison.Ordinal) ||
+            manifestId.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
+        {
+            throw new ArgumentException("A valid quarantine session ID is required.", nameof(manifestId));
+        }
+
+        string quarantineRoot = Path.GetFullPath(_paths.Quarantine);
+        string sessionRoot = Path.GetFullPath(Path.Combine(quarantineRoot, manifestId));
+        string prefix = Path.EndsInDirectorySeparator(quarantineRoot)
+            ? quarantineRoot
+            : quarantineRoot + Path.DirectorySeparatorChar;
+
+        if (!sessionRoot.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+        {
+            throw new ArgumentException("The quarantine session ID must identify a direct child of the quarantine folder.", nameof(manifestId));
+        }
+
+        return sessionRoot;
     }
 
     internal static long FileSize(string path)

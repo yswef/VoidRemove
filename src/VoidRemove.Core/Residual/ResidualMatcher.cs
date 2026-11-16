@@ -45,8 +45,7 @@ public static class ResidualMatcher
         // 2. Anything physically inside the recorded install location belongs to the program.
         if (!string.IsNullOrEmpty(identity.InstallLocation) && !string.IsNullOrEmpty(candidatePath))
         {
-            string root = identity.InstallLocation.TrimEnd('\\', '/');
-            if (candidatePath.StartsWith(root, StringComparison.OrdinalIgnoreCase))
+            if (IsSameOrDescendantPath(identity.InstallLocation, candidatePath))
             {
                 return new ResidualMatch { IsMatch = true, Level = SafetyLevel.Safe, Score = 0.95, Reason = "inside install location" };
             }
@@ -100,6 +99,31 @@ public static class ResidualMatcher
         }
 
         return ResidualMatch.None;
+    }
+
+    private static bool IsSameOrDescendantPath(string rootPath, string candidatePath)
+    {
+        string root;
+        string candidate;
+        try
+        {
+            root = Path.GetFullPath(rootPath);
+            candidate = Path.GetFullPath(candidatePath);
+        }
+        catch (Exception exception) when (exception is ArgumentException or NotSupportedException or PathTooLongException)
+        {
+            return false;
+        }
+
+        if (string.Equals(root, candidate, StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+
+        string prefix = Path.EndsInDirectorySeparator(root)
+            ? root
+            : root + Path.DirectorySeparatorChar;
+        return candidate.StartsWith(prefix, StringComparison.OrdinalIgnoreCase);
     }
 
     private static ResidualMatch Moderate(string reason, double score) =>

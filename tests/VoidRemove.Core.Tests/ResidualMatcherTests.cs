@@ -39,6 +39,16 @@ public sealed class ResidualMatcherTests
     }
 
     [Fact]
+    public void SiblingOfInstallLocationIsNotTreatedAsInsideIt()
+    {
+        ResidualMatch match = ResidualMatcher.Match(
+            Identity(@"C:\Apps\AcmeRocket"),
+            Dir(@"C:\Apps\AcmeRocket2"));
+
+        Assert.False(match.IsMatch);
+    }
+
+    [Fact]
     public void ExactFolderNameIsSafe()
     {
         ResidualMatch match = ResidualMatcher.Match(Identity(), Dir(@"C:\Program Files\Acme Rocket"));

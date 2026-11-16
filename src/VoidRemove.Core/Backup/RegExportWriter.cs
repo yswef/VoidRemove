@@ -54,8 +54,14 @@ public static class RegExportWriter
                 break;
 
             case RegValueKind.Dword:
+                uint dword = value.Data switch
+                {
+                    uint unsigned => unsigned,
+                    int signed => unchecked((uint)signed),
+                    _ => Convert.ToUInt32(value.Data ?? 0),
+                };
                 builder.Append(name).Append("=dword:")
-                    .AppendFormat("{0:x8}", Convert.ToInt64(value.Data ?? 0)).AppendLine();
+                    .AppendFormat("{0:x8}", dword).AppendLine();
                 break;
 
             case RegValueKind.ExpandSz:

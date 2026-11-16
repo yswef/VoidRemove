@@ -43,6 +43,17 @@ public sealed class QuarantineServiceTests
     }
 
     [Fact]
+    public async Task SessionOperationsRejectPathTraversalIds()
+    {
+        using TempDirectory temp = new();
+        QuarantineService service = new(new AppPaths(temp.FullPath));
+
+        await Assert.ThrowsAsync<ArgumentException>(() => service.RestoreAsync(".."));
+        Assert.Throws<ArgumentException>(() => service.Purge(".."));
+        Assert.True(Directory.Exists(temp.FullPath));
+    }
+
+    [Fact]
     public async Task ManifestsAreListedAndCanBePurged()
     {
         using TempDirectory temp = new();
